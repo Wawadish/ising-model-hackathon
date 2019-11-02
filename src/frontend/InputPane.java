@@ -1,9 +1,10 @@
+package frontend;
+
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import javax.xml.soap.Text;
 
 public class InputPane extends VBox {
 
