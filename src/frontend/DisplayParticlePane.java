@@ -45,13 +45,15 @@ public class DisplayParticlePane extends GridPane {
         String strState = stateToString();
         this.bridge = new Bridge(NUM_ROWS, NUM_COLUMNS, 300, 300, strState);
 
-        startAnimation();
     }
 
     public void startAnimation() {
+        System.out.println("oops");
         if (isRunning) {
             return;
         }
+
+        System.out.println("yeet");
 
         bridge.startProcess();
         this.timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> {
