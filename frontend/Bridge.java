@@ -2,6 +2,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
 
 public class Bridge {
 
@@ -10,12 +14,17 @@ public class Bridge {
     private int cols;
     private double gamma;
     private String initialInput;
-    Process process;
+    private Process process;
     private Runtime runtime;
+    private Queue<ArrayList<Position>> changingPositions;
+    private Runnable runningThread;
+    private volatile boolean paused = false;
 
-    InputStream pythonInputStream;
-    InputStreamReader inputStreamReader;
-    BufferedReader bufferedReader;
+
+    private InputStream pythonInputStream;
+    private InputStreamReader inputStreamReader;
+    private BufferedReader bufferedReader;
+    private Scanner scanner;
 
     //Variables
     private final String FILENAME = "../backend/ising_simulation.py";
@@ -32,14 +41,58 @@ public class Bridge {
         this.cols = cols;
         this.initialInput = initialInput;
         this.gamma = gamma;
+        this.changingPositions = new LinkedList<>();
         runtime = Runtime.getRuntime();
     }
 
     //Run Initial Python command
     public void runPythonCommand() throws IOException {
-        String command = ("python " + FILENAME + " " + rows + " " + cols + " " + gamma + " " +initialInput);
+        String command = ("python " + FILENAME + " " + rows + " " + cols + " " + gamma + " " + initialInput);
         process = runtime.exec(command);
     }
 
+    //Read the stream of python output
+    public void readPythonOutput() {
+        pythonInputStream = process.getInputStream();
+        inputStreamReader = new InputStreamReader(pythonInputStream);
+        bufferedReader = new BufferedReader(inputStreamReader);
+        scanner = new Scanner(bufferedReader);
 
+
+        while(!paused) {
+            ArrayList<Position> changedPositions = new ArrayList<>();
+            while (true){
+                int x = scanner.nextInt();
+                if(x == -1 ) {
+                    break;
+                }
+                int y = scanner.nextInt();
+                changedPositions.add(new Position(x, y));
+            }
+            changingPositions.add(changedPositions);
+        }
+        process.destroy();
+    }
+
+    public void BridgeProcess() {
+        runningThread = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    runPythonCommand();
+                    readPythonOutput();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        Thread dataThread = new Thread(runningThread);
+
+        dataThread.start();
+    }
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+    }
 }
