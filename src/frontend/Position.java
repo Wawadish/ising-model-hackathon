@@ -1,3 +1,5 @@
+package frontend;
+
 public class Position {
 
     private int x;

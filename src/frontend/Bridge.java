@@ -1,10 +1,10 @@
+package frontend;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
-import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Bridge {
 
@@ -16,7 +16,7 @@ public class Bridge {
     private String initialInput;
 
     private Process process;
-    private ConcurrentLinkedDeque<List<Position>> changingPositions;
+    private LinkedList<List<Position>> changingPositions;
     private Runnable runningThread;
     private volatile boolean paused = false;
 
@@ -38,7 +38,7 @@ public class Bridge {
         this.initialInput = initialInput;
         this.temperature = temperature;
         this.jConstant = jConstant;
-        this.changingPositions = new ConcurrentLinkedDeque<>();
+        this.changingPositions = new LinkedList<>();
     }
 
     //Run Initial Python command
@@ -84,7 +84,7 @@ public class Bridge {
         this.paused = true;
     }
 
-    public ConcurrentLinkedDeque<List<Position>> getChangingPositions() {
+    public LinkedList<List<Position>> getChangingPositions() {
         return changingPositions;
     }
 }

@@ -1,3 +1,5 @@
+package frontend;
+
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -21,9 +23,5 @@ public class ColorPane extends Pane {
     public void swapState() {
         this.setStyle(state ? STYLE_OFF : STYLE_ON);
         this.state = !this.state;
-    }
-
-    public boolean getState() {
-        return state;
     }
 }

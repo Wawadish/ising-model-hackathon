@@ -1,3 +1,5 @@
+package frontend;
+
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -42,7 +44,7 @@ public class Main extends Application {
             //Left
             root.setLeft(null);
 
-            Scene scene = new Scene(root, 1280, 720);
+            Scene scene = new Scene(root , 1280, 720);
             primaryStage.setScene(scene);
             primaryStage.show();
         }catch (Exception e){
