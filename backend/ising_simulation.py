@@ -130,5 +130,5 @@ ising_system.state = initial_state
 ising_system.energy = initial_energy
 ising_system.params = params
 
-for i in range(10):
+for i in range(1_000_000):
 	time_step(ising_system)
