@@ -48,12 +48,9 @@ public class DisplayParticlePane extends GridPane {
     }
 
     public void startAnimation() {
-        System.out.println("oops");
         if (isRunning) {
             return;
         }
-
-        System.out.println("yeet");
 
         bridge.startProcess();
         this.timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> {
@@ -69,6 +66,7 @@ public class DisplayParticlePane extends GridPane {
             }
         }));
 
+        timeline.setDelay(Duration.seconds(1));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
