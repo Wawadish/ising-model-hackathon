@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Bridge {
 
@@ -16,14 +18,14 @@ public class Bridge {
     private String initialInput;
 
     private Process process;
-    private LinkedList<List<Position>> changingPositions;
+    private ConcurrentLinkedDeque<List<Position>> changingPositions;
     private Runnable runningThread;
     private volatile boolean paused = false;
 
     private Scanner scanner;
 
     //Variables
-    private final String FILENAME = "../backend/ising_simulation.py";
+    private final String FILENAME = "src/backend/ising_simulation.py";
 
     /**
      * @param rows         Numbers of Rows of Grind
@@ -38,7 +40,7 @@ public class Bridge {
         this.initialInput = initialInput;
         this.temperature = temperature;
         this.jConstant = jConstant;
-        this.changingPositions = new LinkedList<>();
+        this.changingPositions = new ConcurrentLinkedDeque<>();
     }
 
     //Run Initial Python command
@@ -51,20 +53,26 @@ public class Bridge {
     private void readPythonOutput() {
         scanner = new Scanner(new BufferedReader(new InputStreamReader(process.getInputStream())));
 
-        while (!paused) {
-            List<Position> changedPositions = new ArrayList<>();
-            while (true) {
-                int x = scanner.nextInt();
-                if (x == -1) {
-                    break;
+        try {
+            while (!paused) {
+                List<Position> changedPositions = new ArrayList<>();
+                while (true) {
+                    int x = scanner.nextInt();
+                    if (x == -1) {
+                        break;
+                    }
+                    int y = scanner.nextInt();
+                    changedPositions.add(new Position(x, y));
                 }
-                int y = scanner.nextInt();
-                changedPositions.add(new Position(x, y));
+
+                changingPositions.addLast(changedPositions);
             }
 
-            changingPositions.addLast(changedPositions);
+        } catch (NoSuchElementException ex) { }
+        finally {
+            process.destroy();
         }
-        process.destroy();
+
     }
 
     public void startProcess() {
@@ -84,7 +92,7 @@ public class Bridge {
         this.paused = true;
     }
 
-    public LinkedList<List<Position>> getChangingPositions() {
+    public ConcurrentLinkedDeque<List<Position>> getChangingPositions() {
         return changingPositions;
     }
 }
