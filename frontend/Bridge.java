@@ -95,4 +95,8 @@ public class Bridge {
     public void setPaused(boolean paused) {
         this.paused = paused;
     }
+
+    public Queue<ArrayList<Position>> getChangingPositions() {
+        return changingPositions;
+    }
 }
