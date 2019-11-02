@@ -5,6 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Material;
 import javafx.stage.Stage;
 
 import java.util.Stack;
@@ -26,17 +27,19 @@ public class Main extends Application {
             p.setPrefHeight(100);
             root.setTop(new TitlePane(WIDTH, (HEIGHT-DisplayParticlePane.HEIGHT)/2));
 
-            //Bottom
-            p = new StackPane();
-            p.setPrefHeight(100);
-            root.setBottom(p);
-
             //Right
             p = new StackPane();
             p.setPrefWidth(400);
             root.setRight(new InputPane(WIDTH - DisplayParticlePane.WIDTH, DisplayParticlePane.HEIGHT));
 
             //Center
+            DisplayParticlePane displayPane = new DisplayParticlePane(new frontend.Parameters(50, 50 , 300, Materials.EINSTEINIUM));
+            root.setCenter(displayPane);
+
+            //Bottom
+            p = new StackPane();
+            p.setPrefHeight(100);
+            root.setBottom(new BottomPane(WIDTH, ((HEIGHT-DisplayParticlePane.HEIGHT)/2), displayPane));
 
             //Left
             root.setLeft(null);

@@ -7,17 +7,25 @@ import javafx.scene.layout.Pane;
 public class BottomPane extends Pane {
 
     private Label timer;
+    private boolean stopped;
     private Button pause;
 
-    public BottomPane(double width, double height, Bridge bridge) {
+    public BottomPane(double width, double height, DisplayParticlePane pane) {
         this.setPrefSize(width, height);
-
-        pause = new Button("PAUSE");
+        this.stopped = true;
+        pause = new Button("START");
 
         pause.setOnAction((event) -> {
-            // Button was clicked, do something...
-            bridge.pause();
-            pause.setText("PAUSED");
+            if(stopped) {
+                pause.setText("STOP");
+                pane.startAnimation();
+                stopped = !stopped;
+            } else {
+                pause.setText("START");
+                pane.stopAnimation();
+                stopped = !stopped;
+            }
+
         });
 
         this.getChildren().addAll(pause);

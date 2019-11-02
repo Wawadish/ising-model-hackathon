@@ -42,14 +42,12 @@ public class DisplayParticlePane extends GridPane {
                 alternate = !alternate;
                 this.add(cp, i, j);
                 grid[i][j] = cp;
-                System.out.println(Runtime.getRuntime().totalMemory());
             }
         }
 
         String strState = stateToString();
         this.bridge = new Bridge(NUM_ROWS, NUM_COLUMNS, 300, 300, strState);
 
-        startAnimation();
     }
 
     public void startAnimation() {
@@ -71,6 +69,7 @@ public class DisplayParticlePane extends GridPane {
             }
         }));
 
+        timeline.setDelay(Duration.seconds(1));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 

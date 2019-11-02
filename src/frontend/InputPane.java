@@ -48,7 +48,6 @@ public class InputPane extends VBox {
         tempSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number old_val, Number new_val) {
-                System.out.println(new_val.doubleValue());
                 sliderLabel.setText(String.format("%.2f + Kelvins", new_val));
             }
         });
