@@ -24,7 +24,7 @@ public class Main extends Application {
             //Top
             StackPane p = new StackPane();
             p.setPrefHeight(100);
-            root.setTop(p);
+            root.setTop(new TitlePane(WIDTH, (HEIGHT-DisplayParticlePane.HEIGHT)/2));
 
             //Bottom
             p = new StackPane();

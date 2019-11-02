@@ -14,11 +14,14 @@ public class TitlePane extends Pane {
 
         this.setPrefSize(width, height);
 
-        double w = (this.getWidth()/2)-(title.getWidth()/2);
-        double h = (this.getHeight()/2)-(title.getHeight()/2);
 
         this.title = new Label("Ising Model Simulation");
         this.title.setFont(new Font(20));
+
+
+        double w = (this.getWidth()/2)-(title.getWidth()/2);
+        double h = (this.getHeight()/2)-(title.getHeight()/2);
+
         this.title.setLayoutX(w);
         this.title.setLayoutY(h);
 

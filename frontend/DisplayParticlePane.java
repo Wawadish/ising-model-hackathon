@@ -6,8 +6,8 @@ import javafx.scene.layout.*;
 import java.awt.*;
 
 public class DisplayParticlePane extends Pane {
-    private final double WIDTH = Main.WIDTH/10 * 7;
-    private final double HEIGHT = Main.HEIGHT/10 * 7;
+    public static final double WIDTH = Main.WIDTH/10 * 7;
+    public static  final double HEIGHT = Main.HEIGHT/10 * 7;
     private int gridX = 75;
     private int gridY = 60;
     public DisplayParticlePane(){
