@@ -34,7 +34,7 @@ public class Main extends Application {
             //Right
             p = new StackPane();
             p.setPrefWidth(400);
-            root.setRight(p);
+            root.setRight(new InputPane(WIDTH - DisplayParticlePane.WIDTH, DisplayParticlePane.HEIGHT));
 
             //Center
             root.setCenter(new DisplayParticlePane());

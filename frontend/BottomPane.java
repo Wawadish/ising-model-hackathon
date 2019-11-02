@@ -1,5 +1,3 @@
-package frontend;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
@@ -16,7 +14,7 @@ public class BottomPane extends Pane {
 
         pause.setOnAction((event) -> {
             // Button was clicked, do something...
-            bridge.setPaused(true);
+            bridge.pause();
             pause.setText("PAUSED");
         });
 
