@@ -24,8 +24,4 @@ public class ColorPane extends Pane {
         this.setStyle(state ? STYLE_OFF : STYLE_ON);
         this.state = !this.state;
     }
-
-    public boolean getState() {
-        return state;
-    }
 }
