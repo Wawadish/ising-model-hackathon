@@ -1,37 +1,29 @@
-import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.layout.*;
 
-import java.awt.*;
+public class DisplayParticlePane extends GridPane {
+    public static final double WIDTH = 0.7 * Main.WIDTH;
+    public static final double HEIGHT = 0.7 * Main.HEIGHT;
 
-public class DisplayParticlePane extends Pane {
-    public static final double WIDTH = Main.WIDTH/10 * 7;
-    public static  final double HEIGHT = Main.HEIGHT/10 * 7;
-    private int gridX = 75;
-    private int gridY = 60;
-    public DisplayParticlePane(){
+    private int NUM_ROWS = 75;
+    private int NUM_COLUMNS = 60;
+
+    public DisplayParticlePane() {
         this.setStyle("-fx-background-color: red");
-        this.setPrefSize(this.WIDTH, this.HEIGHT);
-        //grid
-        GridPane grid = new GridPane();
-        grid.setPrefSize(this.WIDTH, this.HEIGHT);
+        setPrefSize(this.WIDTH, this.HEIGHT);
+
         //Individual Particle
         boolean alternate = false;
-        for (int i = 0; i < gridX; i++) {
+        for (int i = 0; i < NUM_ROWS; i++) {
             alternate = !alternate;
-            for (int j = 0; j < gridY; j++) {
-                ColorPane cp = new ColorPane(WIDTH / gridX, HEIGHT / gridY);
-                if(alternate){
-                    cp.color();
+            for (int j = 0; j < NUM_COLUMNS; j++) {
+                ColorPane cp = new ColorPane(WIDTH / NUM_ROWS, HEIGHT / NUM_COLUMNS);
+                if (alternate) {
+                    cp.swapState();
                 }
                 alternate = !alternate;
-                grid.add(cp, i, j);
+                this.add(cp, i, j);
             }
         }
-
-        this.getChildren().add(grid);
-
     }
 
 }
