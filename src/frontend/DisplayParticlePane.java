@@ -18,6 +18,9 @@ public class DisplayParticlePane extends GridPane {
     private final Bridge bridge;
     private final ColorPane[][] grid;
 
+    private boolean isRunning;
+    private Timeline timeline;
+
     public DisplayParticlePane() {
         this.setStyle("-fx-background-color: red");
         setPrefSize(this.WIDTH, this.HEIGHT);
@@ -42,12 +45,22 @@ public class DisplayParticlePane extends GridPane {
         String strState = stateToString();
         this.bridge = new Bridge(NUM_ROWS, NUM_COLUMNS, 300, 300, strState);
 
+        startAnimation();
+    }
+
+    public void startAnimation() {
+        if (isRunning) {
+            return;
+        }
+
         bridge.startProcess();
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> {
+        this.timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> {
             List<Position> changes = bridge.getChangingPositions().pollFirst();
-            if (changes == null)
+            if (changes == null) {
+                stopAnimation();
                 return;
-            
+            }
+
             for (Position pos : changes) {
                 ColorPane pane = grid[pos.getX()][pos.getY()];
                 pane.swapState();
@@ -56,6 +69,14 @@ public class DisplayParticlePane extends GridPane {
 
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
+
+        isRunning = true;
+    }
+
+    public void stopAnimation() {
+        bridge.pause();
+        timeline.stop();
+        isRunning = false;
     }
 
     private String stateToString() {
