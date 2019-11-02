@@ -21,7 +21,10 @@ public class DisplayParticlePane extends GridPane {
     private boolean isRunning;
     private Timeline timeline;
 
-    public DisplayParticlePane() {
+    public DisplayParticlePane(frontend.Parameters p) {
+        this.NUM_COLUMNS = p.getColumns();
+        this.NUM_ROWS = p.getRows();
+
         this.setStyle("-fx-background-color: red");
         setPrefSize(this.WIDTH, this.HEIGHT);
 
@@ -39,6 +42,7 @@ public class DisplayParticlePane extends GridPane {
                 alternate = !alternate;
                 this.add(cp, i, j);
                 grid[i][j] = cp;
+                System.out.println(Runtime.getRuntime().totalMemory());
             }
         }
 

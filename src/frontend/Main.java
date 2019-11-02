@@ -3,10 +3,7 @@ package frontend;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -18,11 +15,12 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    private static BorderPane root;
 
     @Override
     public void start(Stage primaryStage) {
         try{
-            BorderPane root = new BorderPane();
+            root = new BorderPane();
             //Top
             StackPane p = new StackPane();
             p.setPrefHeight(100);
@@ -39,7 +37,6 @@ public class Main extends Application {
             root.setRight(new InputPane(WIDTH - DisplayParticlePane.WIDTH, DisplayParticlePane.HEIGHT));
 
             //Center
-            root.setCenter(new DisplayParticlePane());
 
             //Left
             root.setLeft(null);
@@ -51,5 +48,9 @@ public class Main extends Application {
             e.printStackTrace();
         }
 
+    }
+
+    public static void updateDisplay(frontend.Parameters p){
+        root.setCenter(new DisplayParticlePane(p));
     }
 }
