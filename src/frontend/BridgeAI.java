@@ -65,8 +65,15 @@ public class BridgeAI {
         scanner = new Scanner(new InputStreamReader(process.getInputStream()));
 
         try {
-            int output = scanner.nextInt();
-            Platform.runLater(() -> callback.accept(output));
+            String str;
+            while ((str = scanner.nextLine()) != null) {
+                if (!str.startsWith("Prediction "))
+                    continue;
+
+                int output = Integer.parseInt(str.substring(11, 12));
+                Platform.runLater(() -> callback.accept(output));
+                break;
+            }
         } catch (NoSuchElementException ex) { }
         finally {
             process.destroy();
