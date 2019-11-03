@@ -19,6 +19,7 @@ public class TitlePane extends Pane {
         setMaxHeight(height);
         setPrefHeight(height);
 
+
         this.title = new Label("Ising Model Simulation");
         this.title.setFont(new Font(44));
         this.title.setAlignment(Pos.TOP_LEFT);
@@ -26,5 +27,7 @@ public class TitlePane extends Pane {
 
         this.getChildren().addAll(this.title);
 
+        title.setFocusTraversable(true);
+        title.requestFocus();
     }
 }

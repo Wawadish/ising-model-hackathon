@@ -3,6 +3,7 @@ package frontend;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
@@ -32,7 +33,7 @@ public class Main extends Application {
             root.setRight(new VBox(new FeedbackPane(), inputPane));
 
             //Center
-            displayPane = new DisplayParticlePane(new frontend.Parameters(50, 50 , 300, Materials.EINSTEINIUM));
+            displayPane = new DisplayParticlePane(new frontend.Parameters(50, 50 , 300, Materials.MEDIUM_FERRO));
             root.setCenter(displayPane);
             //Left
             root.setLeft(null);
@@ -43,6 +44,13 @@ public class Main extends Application {
 
             primaryStage.setOnCloseRequest(e -> {
                 displayPane.stopAnimation();
+            });
+
+            scene.setOnKeyReleased(e -> {
+                if (e.getCode() == KeyCode.C) {
+                    DisplayParticlePane.firstColor = !DisplayParticlePane.firstColor;
+                    e.consume();
+                }
             });
         }catch (Exception e){
             e.printStackTrace();
