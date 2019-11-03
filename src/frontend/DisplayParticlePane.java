@@ -5,10 +5,11 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
-import jdk.nashorn.internal.ir.CatchNode;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class DisplayParticlePane extends GridPane {
     public static final double WIDTH = 0.7 * Main.WIDTH;
@@ -27,6 +28,10 @@ public class DisplayParticlePane extends GridPane {
     private Parameters params;
 
     private double dragRadius = this.WIDTH/20;
+
+    private int itterationCounter = 0;
+    private BridgeAI bridgeAi;
+    private ColorPane[][] copy;
 
     public DisplayParticlePane(frontend.Parameters p) {
         this.numRows = p.getRows();
@@ -98,12 +103,35 @@ public class DisplayParticlePane extends GridPane {
     }
 
     public void startAnimation() {
+
         if (isRunning) {
             return;
         }
 
         bridge.startProcess();
         this.timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> {
+
+            if(grid.length == 100 && grid[0].length == 100) {
+                copy = new ColorPane[100][100];
+                if (itterationCounter % 1000 == 0) {
+                    itterationCounter = 0;
+                    for(int i=0; i<grid.length; i++) {
+                        for (int j = 0; j < grid[i].length; j++) {
+                            copy[i][j] = grid[i][j];
+                        }
+                    }
+                    bridgeAi = new BridgeAI(copy, this::updatePrediction);
+                }
+            }
+
+            if(bridgeAi !=null) {
+                try {
+                    bridgeAi.startProcess();
+                }catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
             List<Position> changes = bridge.getChangingPositions().pollFirst();
             if (changes == null) {
                 stopAnimation();
@@ -114,6 +142,8 @@ public class DisplayParticlePane extends GridPane {
                 ColorPane pane = grid[pos.getX()][pos.getY()];
                 pane.swapState();
             }
+
+            itterationCounter++;
         }));
 
         timeline.setDelay(Duration.seconds(1));
@@ -143,6 +173,14 @@ public class DisplayParticlePane extends GridPane {
             for (int j = 0; j < numCols; j++) {
                 grid[i][j].setStyleOff(styleOff);
             }
+        }
+    }
+
+    public void updatePrediction(int n) {
+        if(n == 1) {
+            InputPane.aIprediction.setText("State Predicted by AI: Ferromagnetic");
+        }else {
+            InputPane.aIprediction.setText("State Predicted by AI: Paramagnetic");
         }
     }
 
