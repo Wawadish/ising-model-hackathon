@@ -15,7 +15,7 @@ public class DisplayParticlePane extends GridPane {
     public static final double WIDTH = 0.7 * Main.WIDTH;
     public static final double HEIGHT = 0.7 * Main.HEIGHT;
 
-    public static boolean firstColor = false;
+    public static boolean firstColor = true;
 
     private int numRows;
     private int numCols;
