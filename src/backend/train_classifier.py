@@ -4,7 +4,7 @@ import numpy as np
 epochs = 3
 batch_size = 50
 num_classes = 2
-data = np.load('test.npy')
+data = np.load('../TrainingData/training_data_02.npy', allow_pickle=True)
 train_x = data[0]
 train_y = data[1]
 

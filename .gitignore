@@ -1,2 +1,4 @@
 out/*
 src/backend/__pycache__/*
+src/backend/temp
+src/backend/temp_ai

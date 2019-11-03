@@ -65,7 +65,7 @@ for i in range(1, 18):
 	is_ferro = (gamma < critical_gamma)
 	print("GENERATING FOR GAMMA {:.2f}. Snapshots: {}".format(gamma, len(snapshots)), flush=True)
 	for runs in range(RUNS_COUNT):
-		if (runs+1) % 25 == 0:
+		if (runs + 1) % 25 == 0:
 			print("Completing run {}".format(runs+1), flush=True)
 		run_simulation(is_ferro, params, snapshots, labels)
 
