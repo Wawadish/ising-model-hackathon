@@ -32,7 +32,7 @@ public class Main extends Application {
             root.setRight(new VBox(new FeedbackPane(), inputPane));
 
             //Center
-            displayPane = new DisplayParticlePane(new frontend.Parameters(50, 50 , 300, Materials.EINSTEINIUM));
+            displayPane = new DisplayParticlePane(new frontend.Parameters(100, 100 , 300, Materials.EINSTEINIUM));
             root.setCenter(displayPane);
             //Left
             root.setLeft(null);
