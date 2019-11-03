@@ -17,7 +17,7 @@ public class DisplayParticlePane extends GridPane {
     private int numCols;
 
     private final Bridge bridge;
-    private final ColorPane[][] grid;
+    private ColorPane[][] grid;
 
     private boolean isRunning;
     private Timeline timeline;
@@ -100,6 +100,22 @@ public class DisplayParticlePane extends GridPane {
         }
 
         return sb.toString();
+    }
+
+    public void changeColorOn(String styleOn) {
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < numCols; j++) {
+                grid[i][j].STYLE_ON = styleOn;
+            }
+        }
+    }
+
+    public void changeColorOff(String styleOff) {
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < numCols; j++) {
+                grid[i][j].STYLE_OFF = styleOff;
+            }
+        }
     }
 
     public int getNumRows() {

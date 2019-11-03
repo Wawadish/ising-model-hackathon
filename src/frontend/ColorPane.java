@@ -6,8 +6,8 @@ import javafx.scene.layout.StackPane;
 
 public class ColorPane extends Pane {
 
-    private static final String STYLE_ON = "-fx-background-color: white";
-    private static final String STYLE_OFF = "-fx-background-color: black";
+    public static String STYLE_ON = "-fx-background-color: white";
+    public static String STYLE_OFF = "-fx-background-color: black";
 
     private boolean state;
 
@@ -28,4 +28,15 @@ public class ColorPane extends Pane {
     public boolean getState() {
         return state;
     }
+
+    public static void setStyleOn(String styleOn) {
+        STYLE_ON = styleOn;
+    }
+
+    public static void setStyleOff(String styleOff) {
+        STYLE_OFF = styleOff;
+    }
+
+
+
 }
