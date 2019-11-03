@@ -151,6 +151,7 @@ public class DisplayParticlePane extends StackPane {
                     } else {
                         try {
                             bridgeAi.encodeInitialState(grid);
+                            System.out.println("CHANGED");
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
