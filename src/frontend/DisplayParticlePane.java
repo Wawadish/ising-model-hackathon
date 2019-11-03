@@ -62,7 +62,7 @@ public class DisplayParticlePane extends GridPane {
         if (isRunning) {
             return;
         }
-
+        
         bridge.startProcess();
         this.timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> {
             List<Position> changes = bridge.getChangingPositions().pollFirst();
