@@ -24,7 +24,8 @@ public class DisplayParticlePane extends GridPane {
     public DisplayParticlePane(frontend.Parameters p) {
         this.NUM_COLUMNS = p.getColumns();
         this.NUM_ROWS = p.getRows();
-
+        setMinSize(this.WIDTH, this.HEIGHT);
+        setMaxSize(this.WIDTH, this.HEIGHT);
         this.setStyle("-fx-background-color: red");
         setPrefSize(this.WIDTH, this.HEIGHT);
 
