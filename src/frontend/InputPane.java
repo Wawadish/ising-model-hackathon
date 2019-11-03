@@ -32,6 +32,7 @@ public class InputPane extends VBox {
         //Materials
         ComboBox<Materials> cbxMaterial = new ComboBox<>();
         cbxMaterial.setItems(FXCollections.observableArrayList(Materials.values()));
+        cbxMaterial.getSelectionModel().select(Materials.EINSTEINIUM);
 
         //X and Y input
         TextField xField = new TextField();

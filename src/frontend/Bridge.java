@@ -1,9 +1,6 @@
 package frontend;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -15,7 +12,7 @@ public class Bridge {
     private final int cols;
     private final double temperature;
     private final double jConstant;
-    private String initialInput;
+    private ColorPane[][] initialInput;
 
     private Process process;
     private ConcurrentLinkedDeque<List<Position>> changingPositions;
@@ -26,6 +23,7 @@ public class Bridge {
 
     //Variables
     private final String FILENAME = "src/backend/ising_simulation.py";
+    private final File TEMP_FILE = new File("src/backend/temp");
 
     /**
      * @param rows         Numbers of Rows of Grind
@@ -34,7 +32,7 @@ public class Bridge {
      * @param temperature  The temperature value
      * @param jConstant    The interaction strength constant
      */
-    public Bridge(int rows, int cols, double temperature, double jConstant, String initialInput) {
+    public Bridge(int rows, int cols, double temperature, double jConstant, ColorPane[][] initialInput) {
         this.rows = rows;
         this.cols = cols;
         this.initialInput = initialInput;
@@ -43,15 +41,28 @@ public class Bridge {
         this.changingPositions = new ConcurrentLinkedDeque<>();
     }
 
+    private void encodeInitialState() throws IOException {
+        PrintWriter writer = new PrintWriter(new FileOutputStream(TEMP_FILE));
+        for (ColorPane[] row : initialInput) {
+            for (ColorPane pane : row) {
+                writer.print(pane.getState() ? '1' : '0');
+            }
+            writer.print('\n');
+        }
+        writer.flush();
+        writer.close();
+    }
+
     //Run Initial Python command
     private void runPythonCommand() throws IOException {
-        String command = String.format("python %s %d %d %f %f %s", FILENAME, rows, cols, temperature, jConstant, initialInput);
+        String command = String.format("python %s %d %d %f %f", FILENAME, rows, cols, temperature, jConstant);
+        System.out.println(command);
         process = Runtime.getRuntime().exec(command);
     }
 
     //Read the stream of python output
     private void readPythonOutput() {
-        scanner = new Scanner(new BufferedReader(new InputStreamReader(process.getInputStream())));
+        scanner = new Scanner(new InputStreamReader(process.getInputStream()));
 
         try {
             while (!paused) {
@@ -78,6 +89,7 @@ public class Bridge {
     public void startProcess() {
         runningThread = () -> {
             try {
+                encodeInitialState();
                 runPythonCommand();
                 readPythonOutput();
             } catch (IOException e) {

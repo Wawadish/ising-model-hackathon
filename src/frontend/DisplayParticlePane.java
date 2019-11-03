@@ -51,20 +51,19 @@ public class DisplayParticlePane extends GridPane {
             }
         }
 
-        String strState = stateToString();
         this.bridge = new Bridge(
                 numRows,
                 numCols,
                 p.getTemperature(),
                 p.getMaterial().getInteractionStrength(),
-                strState);
+                grid);
     }
 
     public void startAnimation() {
         if (isRunning) {
             return;
         }
-        
+
         bridge.startProcess();
         this.timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> {
             List<Position> changes = bridge.getChangingPositions().pollFirst();

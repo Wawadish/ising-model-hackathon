@@ -4,6 +4,9 @@ import argparse
 import random
 import math
 import ising_utils
+import os
+
+dirpath = os.path.dirname(os.path.abspath(__file__))
 
 class Object(object):
     pass
@@ -17,12 +20,10 @@ parser.add_argument('rows', type=int, help='Number of rows')
 parser.add_argument('cols', type=int, help='Number of columns')
 parser.add_argument('temperature', type=float, help='The temperature')
 parser.add_argument('interaction_strength', type=float, help='The interaction strength constant')
-parser.add_argument('data', type=str, help='el data')
 parser.add_argument('--debug', help='Adds debug statements', action='store_true')
 
 # Extract data
 args = parser.parse_args()
-raw_data = args.data
 params = Object()
 params.num_rows = args.rows
 params.num_cols = args.cols
@@ -32,21 +33,19 @@ params.gamma = params.j_constant / (k*params.temperature)
 params.debug = args.debug
 
 if params.debug:
-	print('Rows: {}\nColumns: {}\nTemperature: {}\nJ Constant: {}\nData: {}'
-		.format(args.rows, args.cols, args.temperature, args.interaction_strength, args.data))
+	print('Rows: {}\nColumns: {}\nTemperature: {}\nJ Constant: {}'
+		.format(args.rows, args.cols, args.temperature, args.interaction_strength))
 
 	critical = 2 * params.j_constant / (k * math.log(1+math.sqrt(2)))
 	print('Critical Temperature: {:.3f}'.format(critical))
 
 # Compute the initial state
-initial_state = [[-1 for j in range(params.num_cols)] for i in range(params.num_rows)]
-for idx, val in enumerate(raw_data):
-	if val != '1':
-		continue
-
-	row = idx // params.num_cols
-	col = idx % params.num_cols
-	initial_state[row][col] = 1
+initial_state = [[0 for j in range(params.num_cols)] for i in range(params.num_rows)]
+f = open(dirpath+'/temp', 'r')
+for row in range(params.num_rows):
+	row_str = f.readline()[:-1]
+	for col, val in enumerate(row_str):
+		initial_state[row][col] = 1 if val == '1' else -1
 
 # Print the initial state
 if params.debug:
