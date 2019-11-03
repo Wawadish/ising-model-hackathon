@@ -46,9 +46,13 @@ public class Main extends Application {
             //Left
             root.setLeft(null);
 
-            Scene scene = new Scene(root , 1280, 720);
+            Scene scene = new Scene(root, 1280, 720);
             primaryStage.setScene(scene);
             primaryStage.show();
+
+            primaryStage.setOnCloseRequest(e -> {
+                displayPane.stopAnimation();
+            });
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -58,5 +62,7 @@ public class Main extends Application {
     public static void updateDisplay(frontend.Parameters p){
         Main.displayPane = new DisplayParticlePane(p);
         root.setCenter(Main.displayPane);
+        System.out.println(Main.displayPane.getWidth());
+        System.out.println(Main.displayPane.getHeight());
     }
 }

@@ -3,10 +3,10 @@ package frontend;
 import javafx.scene.paint.Material;
 
 public enum Materials {
-    URANIUM(1.0),
-    TITANIUM(2.0),
-    MANGANESE(3.0),
-    EINSTEINIUM(4.0);
+    URANIUM(300),
+    TITANIUM(400),
+    MANGANESE(500),
+    EINSTEINIUM(600);
 
     private final double interactionStrength;
 

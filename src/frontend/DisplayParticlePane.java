@@ -7,13 +7,14 @@ import javafx.scene.layout.*;
 import javafx.util.Duration;
 
 import java.util.List;
+import java.util.Random;
 
 public class DisplayParticlePane extends GridPane {
     public static final double WIDTH = 0.7 * Main.WIDTH;
     public static final double HEIGHT = 0.7 * Main.HEIGHT;
 
-    private int NUM_ROWS = 75;
-    private int NUM_COLUMNS = 60;
+    private int numRows = 75;
+    private int numCols = 60;
 
     private final Bridge bridge;
     private final ColorPane[][] grid;
@@ -22,33 +23,37 @@ public class DisplayParticlePane extends GridPane {
     private Timeline timeline;
 
     public DisplayParticlePane(frontend.Parameters p) {
-        this.NUM_COLUMNS = p.getColumns();
-        this.NUM_ROWS = p.getRows();
+        this.numRows = p.getRows();
+        this.numCols = p.getColumns();
         setMinSize(this.WIDTH, this.HEIGHT);
         setMaxSize(this.WIDTH, this.HEIGHT);
         this.setStyle("-fx-background-color: red");
         setPrefSize(this.WIDTH, this.HEIGHT);
 
-        this.grid = new ColorPane[NUM_ROWS][NUM_COLUMNS];
+        this.grid = new ColorPane[numRows][numCols];
+
+        Random rand = new Random();
 
         //Individual Particle
-        boolean alternate = false;
-        for (int i = 0; i < NUM_ROWS; i++) {
-            alternate = !alternate;
-            for (int j = 0; j < NUM_COLUMNS; j++) {
-                ColorPane cp = new ColorPane(WIDTH / NUM_ROWS, HEIGHT / NUM_COLUMNS);
-                if (alternate) {
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < numCols; j++) {
+                ColorPane cp = new ColorPane(WIDTH / numRows, HEIGHT / numCols);
+                if (rand.nextDouble() >= 0.5) {
                     cp.swapState();
                 }
-                alternate = !alternate;
+
                 this.add(cp, i, j);
                 grid[i][j] = cp;
             }
         }
 
         String strState = stateToString();
-        this.bridge = new Bridge(NUM_ROWS, NUM_COLUMNS, 300, 300, strState);
-
+        this.bridge = new Bridge(
+                numRows,
+                numCols,
+                p.getTemperature(),
+                p.getMaterial().getInteractionStrength(),
+                strState);
     }
 
     public void startAnimation() {
@@ -57,7 +62,7 @@ public class DisplayParticlePane extends GridPane {
         }
 
         bridge.startProcess();
-        this.timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> {
+        this.timeline = new Timeline(new KeyFrame(Duration.millis(10), event -> {
             List<Position> changes = bridge.getChangingPositions().pollFirst();
             if (changes == null) {
                 stopAnimation();
@@ -84,9 +89,9 @@ public class DisplayParticlePane extends GridPane {
     }
 
     private String stateToString() {
-        StringBuilder sb = new StringBuilder(NUM_ROWS * NUM_COLUMNS);
-        for (int i = 0; i < NUM_ROWS; i++) {
-            for (int j = 0; j < NUM_COLUMNS; j++) {
+        StringBuilder sb = new StringBuilder(numRows * numCols);
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < numCols; j++) {
                 sb.append(grid[i][j].getState() ? '1' : '0');
             }
         }
