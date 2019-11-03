@@ -29,7 +29,7 @@ public class DisplayParticlePane extends StackPane {
     private Parameters params;
 
     private GraphicsContext gc;
-    private double dragRadius = this.WIDTH / 20;
+    private double dragRadius = 50;
 
     public Color colorOn, colorOff;
     private double cellWidth, cellHeight;
@@ -83,20 +83,16 @@ public class DisplayParticlePane extends StackPane {
 
             double x = e.getX();
             double y = e.getY();
-            int gridX = (int) Math.floor(x / cellWidth);
-            int gridY = (int) Math.floor(y / cellHeight);
-            double gridRadius = dragRadius / cellWidth;
-            swapGrid(gridX, gridY);
-            for (int i = 0; i < gridRadius; i++) {
-                swapGrid(gridX + i, gridY + i);
-                swapGrid(gridX + i, gridY);
-                swapGrid(gridX, gridY);
-                swapGrid(gridX, gridY + i);
 
-                swapGrid(gridX - i, gridY - i);
-                swapGrid(gridX - i, gridY);
-                swapGrid(gridX - i, gridY - i);
-                swapGrid(gridX, gridY - i);
+            int minGridX = (int) Math.max(0, Math.floor((x - dragRadius)/cellWidth));
+            int minGridY = (int) Math.max(0, Math.floor((y - dragRadius)/cellHeight));
+            int maxGridX = (int) Math.min(numRows-1, Math.floor((x + dragRadius)/cellWidth));
+            int maxGridY = (int) Math.min(numCols-1, Math.floor((y + dragRadius)/cellHeight));
+
+            for (int i = minGridX; i <= maxGridX; ++i) {
+                for (int j = minGridY; j <= maxGridY; ++j) {
+                    swapGrid(i, j);
+                }
             }
 
         });
