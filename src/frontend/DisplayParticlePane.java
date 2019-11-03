@@ -42,7 +42,9 @@ public class DisplayParticlePane extends GridPane {
         //Individual Particle
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j++) {
-                ColorPane cp = new ColorPane(WIDTH / numRows, HEIGHT / numCols);
+                ColorPane cp = new ColorPane(WIDTH / numRows, HEIGHT / numCols,
+                        "-fx-background-color: rgb(" + (InputPane.colorPicker1.getValue().getRed()*255) + "," + (InputPane.colorPicker1.getValue().getGreen()*255) + ", " + (InputPane.colorPicker1.getValue().getBlue()*255) + ")",
+                        "-fx-background-color: rgb(" + (InputPane.colorPicker2.getValue().getRed()*255) + "," + (InputPane.colorPicker2.getValue().getGreen()*255) + ", " + (InputPane.colorPicker2.getValue().getBlue()*255) + ")");
                 if (rand.nextDouble() >= 0.5) {
                     cp.swapState();
                 }
@@ -135,7 +137,7 @@ public class DisplayParticlePane extends GridPane {
     public void changeColorOn(String styleOn) {
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j++) {
-                grid[i][j].STYLE_ON = styleOn;
+                grid[i][j].setStyleOn(styleOn);
             }
         }
     }
@@ -143,7 +145,7 @@ public class DisplayParticlePane extends GridPane {
     public void changeColorOff(String styleOff) {
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j++) {
-                grid[i][j].STYLE_OFF = styleOff;
+                grid[i][j].setStyleOff(styleOff);
             }
         }
     }
