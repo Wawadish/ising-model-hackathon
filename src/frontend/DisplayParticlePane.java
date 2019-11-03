@@ -38,6 +38,7 @@ public class DisplayParticlePane extends StackPane {
     private double cellWidth, cellHeight;
     private int itterationCounter = 0;
     private BridgeAI bridgeAi;
+    private int hellCount = 1;
 
     public DisplayParticlePane(frontend.Parameters p) {
         this.setPrefSize(WIDTH, HEIGHT);
@@ -143,14 +144,15 @@ public class DisplayParticlePane extends StackPane {
         bridge.startProcess();
         this.timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> {
             if(grid.length == 100 && grid[0].length == 100) {
-                if (itterationCounter % 10000 == 0) {
+                if (itterationCounter % 2000 == 0) {
                     itterationCounter = 0;
                     if (bridgeAi == null) {
                         bridgeAi = new BridgeAI(grid, this::updatePrediction);
                         bridgeAi.startProcess();
                     } else {
                         try {
-                            bridgeAi.encodeInitialState(grid);
+                            bridgeAi.encodeInitialState(grid, hellCount);
+                            hellCount++;
                             System.out.println("CHANGED");
                         } catch (IOException e) {
                             e.printStackTrace();

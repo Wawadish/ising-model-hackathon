@@ -53,8 +53,8 @@ public class BridgeAI {
         writer.close();
     }
 
-    public void encodeInitialState(boolean[][] newInput) throws IOException {
-        FileOutputStream fos = new FileOutputStream(new File(TEMP_FILE.getPath()));
+    public void encodeInitialState(boolean[][] newInput, int n) throws IOException {
+        FileOutputStream fos = new FileOutputStream(new File(TEMP_FILE.getPath() + n));
         PrintWriter writer = new PrintWriter(fos);
         for (boolean[] row : newInput) {
             for (boolean state : row) {
