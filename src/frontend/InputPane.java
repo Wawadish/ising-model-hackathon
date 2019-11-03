@@ -5,35 +5,48 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Material;
+import javafx.scene.text.Font;
 
 import javax.xml.soap.Text;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 
-public class InputPane extends VBox {
+public class InputPane extends GridPane {
+
+    private static final Font FONT = new Font(20);
+    private static final Font FONT_BOLD = new Font("System Bold", 20);
+
+    public static CheckBox checkBox1;
+    public static CheckBox checkBox2;
 
     public static ColorPicker colorPicker1;
-    public static CheckBox checkBox1;
     public static ColorPicker colorPicker2;
-    public static CheckBox checkBox2;
+
     public static Slider tempSlider;
     public static ComboBox<Materials> cbxMaterial;
     public static TextField xField;
     public static TextField yField;
     public static Label aIprediction;
 
+    private Button startStopButton, resetButton;
 
-    public InputPane(double width, double height){
+    public InputPane(double width, double height) {
         this.setPrefSize(width, height);
 
         //Temperature
+        Label labelTemperature = new Label("Temperature: ");
+        Label valueTemperature = new Label("1.00 K");
+        labelTemperature.setFont(FONT);
+        valueTemperature.setFont(FONT);
         tempSlider = new Slider();
         tempSlider.setValue(0);
 
@@ -48,14 +61,36 @@ public class InputPane extends VBox {
         cbxMaterial.setItems(FXCollections.observableArrayList(Materials.values()));
         cbxMaterial.getSelectionModel().select(Materials.EINSTEINIUM);
 
+        cbxMaterial.setButtonCell(new ListCell(){
+
+            @Override
+            protected void updateItem(Object item, boolean empty) {
+                super.updateItem(item, empty);
+                if(empty || item==null){
+                    setStyle("-fx-font-size:18");
+                } else {
+                    setStyle("-fx-font-size:18");
+                    setText(item.toString());
+                }
+            }
+
+        });
+
         //X and Y input
         xField = new TextField();
         yField = new TextField();
         xField.setText("50");
         yField.setText("50");
+        xField.setPrefColumnCount(2);
+        yField.setPrefColumnCount(2);
+        xField.setAlignment(Pos.CENTER);
+        yField.setAlignment(Pos.CENTER);
+        xField.setFont(new Font(18));
+        yField.setFont(new Font(18));
+
 
         //Actions and Listeners
-        xField.setOnAction(e->{
+        xField.setOnAction(e -> {
             if (!(xField.getText().equals("") || yField.getText().equals(""))) {
                 Main.updateDisplay(new DisplayParticlePane(new Parameters(Integer.valueOf(xField.getText()),
                         Integer.valueOf(yField.getText()),
@@ -71,7 +106,7 @@ public class InputPane extends VBox {
         tempSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number old_val, Number new_val) {
-                sliderLabel.setText(String.format("%.2f + Kelvins", new_val));
+                valueTemperature.setText(String.format("%.2f K", new_val));
                 Main.displayPane.updateThings(new_val.doubleValue(), Main.displayPane.getParams().material);
             }
         });
@@ -88,14 +123,14 @@ public class InputPane extends VBox {
 
         //Color Picker 1
         colorPicker1 = new ColorPicker();
-        colorPicker1.setLayoutY(height/2);
+        colorPicker1.setLayoutY(height / 2);
         checkBox1 = new CheckBox();
         checkBox1.setSelected(true);
         checkBox1.setDisable(true);
 
         //Color Picker 2
         colorPicker2 = new ColorPicker(new Color(0, 0, 0, 1));
-        colorPicker2.setLayoutY(height/2 + height/20);
+        colorPicker2.setLayoutY(height / 2 + height / 20);
         checkBox2 = new CheckBox();
 
 
@@ -111,7 +146,6 @@ public class InputPane extends VBox {
                 checkBox1.setDisable(true);
             }
         });
-
         checkBox2.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -125,20 +159,10 @@ public class InputPane extends VBox {
             }
         });
 
-        HBox hbox1 = new HBox();
-        hbox1.setSpacing(this.getPrefWidth()/4);
-        hbox1.getChildren().addAll(colorPicker1,checkBox1);
-
-        HBox hbox2 = new HBox();
-        hbox2.setSpacing(this.getPrefWidth()/4);
-        hbox2.getChildren().addAll(colorPicker2,checkBox2);
-
-
         colorPicker1.setOnAction(event -> {
             Color c = colorPicker1.getValue();
             Main.displayPane.changeColorOn(c);
         });
-
         colorPicker2.setOnAction(event -> {
             Color c = colorPicker2.getValue();
             Main.displayPane.changeColorOff(c);
@@ -146,9 +170,86 @@ public class InputPane extends VBox {
 
         //Ai Prediction
         aIprediction = new Label("State Predicted by AI: ");
-        sliderLabel.setLayoutY(height/2 + height/10);;
+        sliderLabel.setLayoutY(height / 2 + height / 10);
 
-        //Add to pane
-        this.getChildren().addAll(tempBox,cbxMaterial, xyBox, hbox1, hbox2, aIprediction);
+
+        Label labelSubtitle = new Label("User Inputs");
+        Label labelMaterial = new Label("Material: ");
+        Label labelGridSize = new Label("Grid Size: ");
+        Label temp = new Label("  by  ");
+        temp.setFont(FONT);
+        labelMaterial.setFont(FONT);
+        labelGridSize.setFont(FONT);
+        labelSubtitle.setFont(new Font("System Bold", 25));
+
+        Label labelColor1 = new Label("Color 1: ");
+        Label labelColor2 = new Label("Color 2: ");
+        labelColor1.setFont(FONT);
+        labelColor2.setFont(FONT);
+
+        setupButtons();
+
+        // Add to pane
+        this.add(labelSubtitle, 0, 0, 2, 1);
+
+        this.add(labelGridSize, 0, 1);
+        this.add(new HBox(xField, temp, yField), 1, 1);
+
+        this.add(labelMaterial, 0, 2);
+        this.add(cbxMaterial, 1, 2);
+
+        this.add(labelTemperature, 0,3);
+        this.add(valueTemperature, 1,3);
+
+        this.add(tempSlider, 0, 4, 2, 1);
+
+        this.add(labelColor1, 0, 5);
+        this.add(colorPicker1, 1, 5);
+        this.add(labelColor2, 0, 6);
+        this.add(colorPicker2, 1, 6);
+
+        this.add(new HBox(), 0, 7);
+
+        this.add(startStopButton, 0, 8);
+        this.add(resetButton, 1, 8);
+
+        this.setVgap(15);
+        this.setPadding(new Insets(10, 0, 0, 30));
+    }
+
+    private void setupButtons() {
+        startStopButton = new Button("START");
+        resetButton = new Button("RESET");
+
+        startStopButton.setFont(FONT_BOLD);
+        resetButton.setFont(FONT_BOLD);
+
+        startStopButton.setOnAction((event) -> {
+            if(!Main.displayPane.isRunning) {
+                startStopButton.setText("STOP");
+                cbxMaterial.setDisable(true);
+                tempSlider.setDisable(true);
+                xField.setDisable(true);
+                yField.setDisable(true);
+                Main.displayPane.startAnimation();
+            } else {
+                startStopButton.setText("START");
+                cbxMaterial.setDisable(false);
+                tempSlider.setDisable(false);
+                xField.setDisable(false);
+                yField.setDisable(false);
+                Main.displayPane.stopAnimation();
+            }
+        });
+
+        resetButton.setOnAction((event) -> {
+            Main.displayPane.stopAnimation();
+            startStopButton.setText("START");
+            cbxMaterial.setDisable(false);
+            tempSlider.setDisable(false);
+            xField.setDisable(false);
+            yField.setDisable(false);
+            Main.updateDisplay(new DisplayParticlePane(Main.displayPane.getParams()));
+        });
     }
 }

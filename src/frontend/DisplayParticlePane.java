@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class DisplayParticlePane extends StackPane {
     public static final double WIDTH = 0.7 * Main.WIDTH;
-    public static final double HEIGHT = 0.7 * Main.HEIGHT;
+    public static final double HEIGHT = Main.HEIGHT - 100;
 
     public static boolean firstColor = true;
 
@@ -27,7 +27,7 @@ public class DisplayParticlePane extends StackPane {
     private Bridge bridge;
     public boolean[][] grid;
 
-    private boolean isRunning;
+    public boolean isRunning;
     private Timeline timeline;
     private Parameters params;
 

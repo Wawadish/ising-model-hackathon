@@ -23,22 +23,17 @@ public class Main extends Application {
             //Top
             StackPane p = new StackPane();
             p.setPrefHeight(100);
-            root.setTop(new TitlePane(WIDTH, (HEIGHT-DisplayParticlePane.HEIGHT)/2));
+            root.setTop(new TitlePane(WIDTH, 100));
 
-            //Right
+            // Right
             p = new StackPane();
             p.setPrefWidth(400);
-            root.setRight(new InputPane(WIDTH - DisplayParticlePane.WIDTH, DisplayParticlePane.HEIGHT));
+            InputPane inputPane = new InputPane(WIDTH - DisplayParticlePane.WIDTH, DisplayParticlePane.HEIGHT);
+            root.setRight(new VBox(new FeedbackPane(), inputPane));
 
             //Center
             displayPane = new DisplayParticlePane(new frontend.Parameters(50, 50 , 300, Materials.EINSTEINIUM));
             root.setCenter(displayPane);
-
-            //Bottom
-            p = new StackPane();
-            p.setPrefHeight(100);
-            root.setBottom(new BottomPane(WIDTH, ((HEIGHT-DisplayParticlePane.HEIGHT)/2)));
-
             //Left
             root.setLeft(null);
 

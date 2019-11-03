@@ -1,5 +1,6 @@
 package frontend;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
@@ -14,15 +15,14 @@ public class TitlePane extends Pane {
     public double height;
 
     public TitlePane(double width, double height) {
-        this.width = width;
-        this.height = height;
-
-        this.setPrefSize(width, height);
-
+        setMinHeight(height);
+        setMaxHeight(height);
+        setPrefHeight(height);
 
         this.title = new Label("Ising Model Simulation");
-        this.title.setFont(new Font(this.height));
+        this.title.setFont(new Font(44));
         this.title.setAlignment(Pos.TOP_LEFT);
+        this.title.setPadding(new Insets(10, 0, 10, 20));
 
         this.getChildren().addAll(this.title);
 

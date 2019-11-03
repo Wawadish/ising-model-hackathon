@@ -21,7 +21,6 @@ public enum Materials {
     @Override
     public String toString() {
         String s = super.toString().toLowerCase();
-        s = s.substring(0,1).toUpperCase() + s.substring(1);
-        return s;
+        return s.substring(0, 1).toUpperCase() + s.substring(1) + " (" + interactionStrength + ")";
     }
 }
