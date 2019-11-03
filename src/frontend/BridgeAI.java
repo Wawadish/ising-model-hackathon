@@ -1,11 +1,14 @@
 package frontend;
 
+import javafx.application.Platform;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.function.Consumer;
 
 public class BridgeAI {
 
@@ -18,21 +21,18 @@ public class BridgeAI {
     private Runnable runningThread;
 
     private Scanner scanner;
+    private Consumer<Integer> callback;
 
     //Variables
     private final String FILENAME = "src/backend/predict_phase.py";
     private final File TEMP_FILE = new File("src/backend/temp_ai");
 
     /**
-     * @param rows         Numbers of Rows of Grind
-     * @param cols         Number of columns of Grid
      * @param initialInput The String of 1's and 0's representing the grid
-     * @param temperature  The temperature value
-     * @param jConstant    The interaction strength constant
+     * @param callback yeet
      */
-    public BridgeAI(ColorPane[][] initialInput) {
-        this.rows = rows;
-        this.cols = cols;
+    public BridgeAI(ColorPane[][] initialInput, Consumer<Integer> callback) {
+        this.callback = callback;
         
 		for (int i = 0; i < NUM_ROWS; ++i) {
 			for (int j = 0; j < NUM_COLS; ++j) {
@@ -66,7 +66,7 @@ public class BridgeAI {
 
         try {
             int output = scanner.nextInt();
-			// TODO: apply output
+            Platform.runLater(() -> callback.accept(output));
         } catch (NoSuchElementException ex) { }
         finally {
             process.destroy();
@@ -86,9 +86,5 @@ public class BridgeAI {
         };
 
         new Thread(runningThread).start();
-    }
-
-    public void pause() {
-        this.paused = true;
     }
 }

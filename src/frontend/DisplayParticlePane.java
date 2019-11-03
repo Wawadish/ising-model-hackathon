@@ -74,7 +74,6 @@ public class DisplayParticlePane extends GridPane {
                 swapGrid(gridX-i, gridY-i);
                 swapGrid(gridX, gridY-i);
             }
-            System.out.println("Position: " + x + " " + y);
 
         });
         this.bridge = new Bridge(
@@ -130,18 +129,7 @@ public class DisplayParticlePane extends GridPane {
             timeline.stop();
         isRunning = false;
     }
-
-    private String stateToString() {
-        StringBuilder sb = new StringBuilder(numRows * numCols);
-        for (int i = 0; i < numRows; i++) {
-            for (int j = 0; j < numCols; j++) {
-                sb.append(grid[i][j].getState() ? '1' : '0');
-            }
-        }
-
-        return sb.toString();
-    }
-
+    
     public void changeColorOn(String styleOn) {
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j++) {
