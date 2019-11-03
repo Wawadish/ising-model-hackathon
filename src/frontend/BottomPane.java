@@ -9,11 +9,15 @@ public class BottomPane extends Pane {
     private Label timer;
     private boolean stopped;
     private Button pause;
+    private Button reset;
 
     public BottomPane(double width, double height) {
         this.setPrefSize(width, height);
         this.stopped = true;
         pause = new Button("START");
+
+        reset = new Button("RESET");
+        reset.setLayoutX(pause.getLayoutX() + width/10);
 
         pause.setOnAction((event) -> {
             if(stopped) {
@@ -25,10 +29,17 @@ public class BottomPane extends Pane {
                 Main.displayPane.stopAnimation();
                 stopped = !stopped;
             }
-
         });
 
-        this.getChildren().addAll(pause);
+        reset.setOnAction((event) -> {
+            Main.displayPane.stopAnimation();
+            pause.setText("START");
+            Main.updateDisplay(new DisplayParticlePane(Main.displayPane.getParams()));
+        });
+
+
+
+        this.getChildren().addAll(pause, reset);
 
     }
 

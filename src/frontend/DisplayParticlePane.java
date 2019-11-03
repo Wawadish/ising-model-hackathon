@@ -13,18 +13,20 @@ public class DisplayParticlePane extends GridPane {
     public static final double WIDTH = 0.7 * Main.WIDTH;
     public static final double HEIGHT = 0.7 * Main.HEIGHT;
 
-    private int numRows = 75;
-    private int numCols = 60;
+    private int numRows;
+    private int numCols;
 
     private final Bridge bridge;
     private final ColorPane[][] grid;
 
     private boolean isRunning;
     private Timeline timeline;
+    private Parameters params;
 
     public DisplayParticlePane(frontend.Parameters p) {
         this.numRows = p.getRows();
         this.numCols = p.getColumns();
+        this.params = p;
         setMinSize(this.WIDTH, this.HEIGHT);
         setMaxSize(this.WIDTH, this.HEIGHT);
         this.setStyle("-fx-background-color: red");
@@ -62,7 +64,7 @@ public class DisplayParticlePane extends GridPane {
         }
 
         bridge.startProcess();
-        this.timeline = new Timeline(new KeyFrame(Duration.millis(10), event -> {
+        this.timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> {
             List<Position> changes = bridge.getChangingPositions().pollFirst();
             if (changes == null) {
                 stopAnimation();
@@ -84,7 +86,8 @@ public class DisplayParticlePane extends GridPane {
 
     public void stopAnimation() {
         bridge.pause();
-        timeline.stop();
+        if (timeline != null)
+            timeline.stop();
         isRunning = false;
     }
 
@@ -97,5 +100,17 @@ public class DisplayParticlePane extends GridPane {
         }
 
         return sb.toString();
+    }
+
+    public int getNumRows() {
+        return numRows;
+    }
+
+    public int getNumCols() {
+        return numCols;
+    }
+
+    public Parameters getParams() {
+        return params;
     }
 }

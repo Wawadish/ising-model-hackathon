@@ -1,14 +1,9 @@
 package frontend;
 
 import javafx.application.Application;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Material;
 import javafx.stage.Stage;
-
-import java.util.Stack;
 
 public class Main extends Application {
     public static double WIDTH = 1280;
@@ -59,8 +54,8 @@ public class Main extends Application {
 
     }
 
-    public static void updateDisplay(frontend.Parameters p){
-        Main.displayPane = new DisplayParticlePane(p);
+    public static void updateDisplay(DisplayParticlePane p){
+        Main.displayPane = new DisplayParticlePane(p.getParams());
         root.setCenter(Main.displayPane);
         System.out.println(Main.displayPane.getWidth());
         System.out.println(Main.displayPane.getHeight());
