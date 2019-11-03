@@ -21,9 +21,11 @@ public class FeedbackPane extends GridPane {
         Label labelMagnetization = new Label("Magnetization: ");
         Label labelAI = new Label("State Predicted by AI: ");
 
+
         valueEnergy = new Label("123");
         valueMagnetization = new Label("234");
         valueAI = new Label("___");
+
         Label labelSubtitle =new Label("Statistics: ");
 
         labelEnergy.setFont(FONT);
