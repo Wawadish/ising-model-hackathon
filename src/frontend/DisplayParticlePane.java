@@ -86,7 +86,13 @@ public class DisplayParticlePane extends GridPane {
     }
     private void swapGrid(int i, int j){
         try{
-            this.grid[i][j].setState(firstColor);
+            String initialStyle = this.grid[i][j].getStyle();
+            this.grid[i][j].setColor(firstColor);
+            String finalStyle = this.grid[i][j].getStyle();
+            if(!initialStyle.equals(finalStyle)){
+                this.grid[i][j].setState(!this.grid[i][j].getState());
+            }
+
         }catch(Exception e){
 
         }

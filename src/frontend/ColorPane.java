@@ -46,7 +46,11 @@ public class ColorPane extends Pane {
         }
     }
 
-    public void setState(boolean firstColor){
+    public void setState(boolean state){
+        this.state = state;
+    }
+
+    public void setColor(boolean firstColor){
         if(firstColor){
             this.setStyle(STYLE_ON);
         }else{
