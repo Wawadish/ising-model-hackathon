@@ -41,9 +41,22 @@ public class BridgeAI {
 		}
     }
 
-    private void encodeInitialState() throws IOException {
+    public void encodeInitialState() throws IOException {
         PrintWriter writer = new PrintWriter(new FileOutputStream(TEMP_FILE));
         for (boolean[] row : input) {
+            for (boolean state : row) {
+                writer.print(state ? '1' : '0');
+            }
+            writer.print('\n');
+        }
+        writer.flush();
+        writer.close();
+    }
+
+    public void encodeInitialState(ColorPane[][] newInput) throws IOException {
+        boolean[][] newArray = getInput(newInput);
+        PrintWriter writer = new PrintWriter(new FileOutputStream(TEMP_FILE));
+        for (boolean[] row : newArray) {
             for (boolean state : row) {
                 writer.print(state ? '1' : '0');
             }
@@ -93,5 +106,15 @@ public class BridgeAI {
         };
 
         new Thread(runningThread).start();
+    }
+
+    public boolean[][] getInput(ColorPane[][] grid) {
+        boolean[][] newArray = new boolean[NUM_ROWS][NUM_COLS];
+        for (int i = 0; i < NUM_ROWS; ++i) {
+            for (int j = 0; j < NUM_COLS; ++j) {
+                newArray[i][j] = grid[i][j].getState();
+            }
+        }
+        return newArray;
     }
 }

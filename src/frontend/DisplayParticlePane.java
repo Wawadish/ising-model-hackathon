@@ -6,6 +6,7 @@ import javafx.animation.Timeline;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -136,9 +137,17 @@ public class DisplayParticlePane extends GridPane {
                             copy[i][j] = grid[i][j];
                         }
                     }
-                    bridgeAi = new BridgeAI(copy, this::updatePrediction);
+                    if (bridgeAi == null) {
+                        bridgeAi = new BridgeAI(copy, this::updatePrediction);
+                    } else {
+                        try {
+                            bridgeAi.encodeInitialState(copy);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
-                    if(bridgeAi !=null) {
+                    if(bridgeAi == null) {
                         try {
                             bridgeAi.startProcess();
                         }catch(Exception e) {
