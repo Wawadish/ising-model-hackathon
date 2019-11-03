@@ -74,7 +74,6 @@ public class DisplayParticlePane extends GridPane {
                 swapGrid(gridX-i, gridY-i);
                 swapGrid(gridX, gridY-i);
             }
-            System.out.println("Position: " + x + " " + y);
 
         });
         this.bridge = new Bridge(

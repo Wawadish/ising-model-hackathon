@@ -12,12 +12,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Material;
 
 import javax.xml.soap.Text;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 
 public class InputPane extends VBox {
 
     public static ColorPicker colorPicker1;
+    public static CheckBox checkBox1;
     public static ColorPicker colorPicker2;
+    public static CheckBox checkBox2;
     public static Slider tempSlider;
     public static ComboBox<Materials> cbxMaterial;
     public static TextField xField;
@@ -81,6 +85,9 @@ public class InputPane extends VBox {
         //Color Picker 1
         colorPicker1 = new ColorPicker();
         colorPicker1.setLayoutY(height/2);
+        checkBox1 = new CheckBox();
+        checkBox1.setSelected(true);
+        checkBox1.setOpacity(0);
 
         colorPicker1.setOnAction(event -> {
             Color c = colorPicker1.getValue();
@@ -91,6 +98,41 @@ public class InputPane extends VBox {
         //Color Picker 2
         colorPicker2 = new ColorPicker(new Color(0, 0, 0, 1));
         colorPicker2.setLayoutY(height/2 + height/20);
+        checkBox2 = new CheckBox();
+        checkBox2.setOpacity(1);
+
+
+        checkBox1.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                DisplayParticlePane.firstColor = true;
+                checkBox1.setOpacity(0);
+                checkBox2.setOpacity(1);
+                checkBox2.setSelected(false);
+            }
+        });
+
+        checkBox2.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                DisplayParticlePane.firstColor = false;
+                checkBox2.setOpacity(0);
+                checkBox1.setOpacity(1);
+                checkBox1.setSelected(false);
+            }
+        });
+        checkBox2.setOnAction(e->{
+            checkBox1.setSelected(checkBox1.isSelected());
+        });
+
+        HBox hbox1 = new HBox();
+        hbox1.setSpacing(this.getPrefWidth()/4);
+        hbox1.getChildren().addAll(colorPicker1,checkBox1);
+
+        HBox hbox2 = new HBox();
+        hbox2.setSpacing(this.getPrefWidth()/4);
+        hbox2.getChildren().addAll(colorPicker2,checkBox2);
+
 
         colorPicker1.setOnAction(event -> {
             Color c = colorPicker1.getValue();
@@ -109,6 +151,6 @@ public class InputPane extends VBox {
         sliderLabel.setLayoutY(height/2 + height/10);;
 
         //Add to pane
-        this.getChildren().addAll(tempBox,cbxMaterial, xyBox, colorPicker1, colorPicker2, aIprediction);
+        this.getChildren().addAll(tempBox,cbxMaterial, xyBox, hbox1, hbox2, aIprediction);
     }
 }
