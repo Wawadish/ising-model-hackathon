@@ -9,11 +9,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class DisplayParticlePane extends StackPane {
     public static final double WIDTH = 0.7 * Main.WIDTH;
@@ -36,7 +33,7 @@ public class DisplayParticlePane extends StackPane {
 
     private Color colorOn, colorOff;
     private double cellWidth, cellHeight;
-    private int itterationCounter = 0;
+    private int iterationCounter = 0;
     private BridgeAI bridgeAi;
     private int hellCount = 1;
 
@@ -144,22 +141,14 @@ public class DisplayParticlePane extends StackPane {
         bridge.startProcess();
         this.timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> {
             if(grid.length == 100 && grid[0].length == 100) {
-                if (itterationCounter % 2000 == 0) {
-                    itterationCounter = 0;
-                    if (bridgeAi == null) {
-                        bridgeAi = new BridgeAI(grid, this::updatePrediction);
-                        bridgeAi.startProcess();
-                    } else {
-                        try {
-                            bridgeAi.encodeInitialState(grid, hellCount);
-                            hellCount++;
-                            System.out.println("CHANGED");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                if (iterationCounter % 10_000 == 0) {
+                    iterationCounter = 0;
+                    if (bridgeAi != null) {
+                        bridgeAi.stop();
                     }
 
- 
+                    bridgeAi = new BridgeAI(grid, this::updatePrediction);
+                    bridgeAi.startProcess();
                 }
             }
 
@@ -181,7 +170,7 @@ public class DisplayParticlePane extends StackPane {
                 grid[x][y] = !grid[x][y];
             }
 
-            itterationCounter++;
+            iterationCounter++;
         }));
 
         timeline.setDelay(Duration.seconds(1));
@@ -231,10 +220,10 @@ public class DisplayParticlePane extends StackPane {
     }
 
     public void updatePrediction(int n) {
-        if(n == 1) {
-            InputPane.aIprediction.setText("State Predicted by AI: Ferromagnetic");
-        }else {
-            InputPane.aIprediction.setText("State Predicted by AI: Paramagnetic");
+        if (n == 0) {
+            FeedbackPane.valueAI.setText("PARA");
+        } else {
+            FeedbackPane.valueAI.setText("FERRO");
         }
     }
 
