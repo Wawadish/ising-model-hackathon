@@ -14,6 +14,8 @@ public class DisplayParticlePane extends GridPane {
     public static final double WIDTH = 0.7 * Main.WIDTH;
     public static final double HEIGHT = 0.7 * Main.HEIGHT;
 
+    public static boolean firstColor = false;
+
     private int numRows;
     private int numCols;
 
@@ -84,7 +86,7 @@ public class DisplayParticlePane extends GridPane {
     }
     private void swapGrid(int i, int j){
         try{
-            this.grid[i][j].swapState();
+            this.grid[i][j].setState(firstColor);
         }catch(Exception e){
 
         }
