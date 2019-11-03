@@ -142,7 +142,7 @@ public class DisplayParticlePane extends StackPane {
         bridge.startProcess();
         this.timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> {
             if (grid.length == 100 && grid[0].length == 100) {
-                if (iterationCounter % 7_000 == 0) {
+                if (iterationCounter % 3_000 == 0) {
                     iterationCounter = 0;
                     if (bridgeAi != null) {
                         bridgeAi.stop();

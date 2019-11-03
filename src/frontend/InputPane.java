@@ -59,7 +59,7 @@ public class InputPane extends GridPane {
         //Materials
         cbxMaterial = new ComboBox<>();
         cbxMaterial.setItems(FXCollections.observableArrayList(Materials.values()));
-        cbxMaterial.getSelectionModel().select(Materials.EINSTEINIUM);
+        cbxMaterial.getSelectionModel().select(Materials.MEDIUM_FERRO);
 
         cbxMaterial.setButtonCell(new ListCell(){
 
@@ -79,8 +79,8 @@ public class InputPane extends GridPane {
         //X and Y input
         xField = new TextField();
         yField = new TextField();
-        xField.setText("50");
-        yField.setText("50");
+        xField.setText("100");
+        yField.setText("100");
         xField.setPrefColumnCount(2);
         yField.setPrefColumnCount(2);
         xField.setAlignment(Pos.CENTER);
