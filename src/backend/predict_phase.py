@@ -8,7 +8,7 @@ class Object(object):
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 
-MODEL = dirpath + '/../models/model_20191103-015907'
+MODEL = dirpath + '/../models/model_20191103-095924'
 
 params = Object()
 params.num_cols = 100
