@@ -3,65 +3,81 @@ package frontend;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.layout.*;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import jdk.nashorn.internal.ir.CatchNode;
 
 import java.util.List;
 import java.util.Random;
 
-public class DisplayParticlePane extends GridPane {
+public class DisplayParticlePane extends StackPane {
     public static final double WIDTH = 0.7 * Main.WIDTH;
     public static final double HEIGHT = 0.7 * Main.HEIGHT;
 
-    public static boolean firstColor = false;
+    public static boolean firstColor = true;
 
     private int numRows;
     private int numCols;
 
     private Bridge bridge;
-    public ColorPane[][] grid;
+    public boolean[][] grid;
 
     private boolean isRunning;
     private Timeline timeline;
     private Parameters params;
 
+    private GraphicsContext gc;
     private double dragRadius = this.WIDTH / 20;
 
+    private Color colorOn, colorOff;
+
+    private double cellWidth, cellHeight;
+
     public DisplayParticlePane(frontend.Parameters p) {
+        this.setPrefSize(WIDTH, HEIGHT);
+        this.colorOn = Color.WHITE;
+        this.colorOff = Color.BLACK;
+
+        Canvas canvas = new Canvas(WIDTH, HEIGHT);
+        gc = canvas.getGraphicsContext2D();
+
+        this.getChildren().add(canvas);
+
         this.numRows = p.getRows();
         this.numCols = p.getColumns();
         this.params = p;
-        setMinSize(this.WIDTH, this.HEIGHT);
-        setMaxSize(this.WIDTH, this.HEIGHT);
-        this.setStyle("-fx-background-color: red");
-        setPrefSize(this.WIDTH, this.HEIGHT);
+        this.setStyle("-fx-background-color: black");
 
-        this.grid = new ColorPane[numRows][numCols];
+        this.grid = new boolean[numRows][numCols];
 
         Random rand = new Random();
 
         //Individual Particle
+        gc.setFill(Color.WHITE);
+        cellWidth = WIDTH / numRows;
+        cellHeight = HEIGHT / numCols;
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j++) {
-                ColorPane cp = new ColorPane(WIDTH / numRows, HEIGHT / numCols,
-                        "-fx-background-color: rgb(" + (InputPane.colorPicker1.getValue().getRed() * 255) + "," + (InputPane.colorPicker1.getValue().getGreen() * 255) + ", " + (InputPane.colorPicker1.getValue().getBlue() * 255) + ")",
-                        "-fx-background-color: rgb(" + (InputPane.colorPicker2.getValue().getRed() * 255) + "," + (InputPane.colorPicker2.getValue().getGreen() * 255) + ", " + (InputPane.colorPicker2.getValue().getBlue() * 255) + ")");
                 if (rand.nextDouble() >= 0.5) {
-                    cp.swapState();
+                    grid[i][j] = true;
+                    fillCell(i, j);
+                } else {
+                    clearCell(i, j);
                 }
-
-                this.add(cp, i, j);
-                grid[i][j] = cp;
             }
         }
 
         this.setOnMouseDragged(e -> {
+            if (isRunning)
+                return;
+
             double x = e.getX();
             double y = e.getY();
-            int gridX = (int)Math.floor(x/grid[0][0].getWidth());
-            int gridY = (int)Math.floor(y/grid[0][0].getHeight());
-            double gridRadius = dragRadius/grid[0][0].getWidth();
+            int gridX = (int)Math.floor(x/cellWidth);
+            int gridY = (int)Math.floor(y/cellHeight);
+            double gridRadius = dragRadius/cellWidth;
             swapGrid(gridX, gridY);
             for (int i = 0; i < gridRadius; i++){
                 swapGrid(gridX+i, gridY+i);
@@ -100,16 +116,17 @@ public class DisplayParticlePane extends GridPane {
     }
 
     private void swapGrid(int i, int j){
-        try{
-            String initialStyle = this.grid[i][j].getStyle();
-            this.grid[i][j].setColor(firstColor);
-            String finalStyle = this.grid[i][j].getStyle();
-            if(!initialStyle.equals(finalStyle)){
-                this.grid[i][j].setState(!this.grid[i][j].getState());
-            }
+        if (i < 0 || j < 0 || i >= numRows || j >= numCols)
+            return;
 
-        }catch(Exception e){
+        if (!firstColor && this.grid[i][j]) {
+            this.grid[i][j] = false;
+            clearCell(i, j);
+        }
 
+        if (firstColor && !this.grid[i][j]) {
+            this.grid[i][j] = true;
+            fillCell(i, j);
         }
     }
 
@@ -119,7 +136,7 @@ public class DisplayParticlePane extends GridPane {
         }
 
         bridge.startProcess();
-        this.timeline = new Timeline(new KeyFrame(Duration.millis(10), event -> {
+        this.timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> {
             List<Position> changes = bridge.getChangingPositions().pollFirst();
             if (changes == null) {
                 stopAnimation();
@@ -127,8 +144,15 @@ public class DisplayParticlePane extends GridPane {
             }
 
             for (Position pos : changes) {
-                ColorPane pane = grid[pos.getX()][pos.getY()];
-                pane.swapState();
+                int x = pos.getX();
+                int y = pos.getY();
+                if (grid[x][y]) {
+                    clearCell(x, y);
+                } else {
+                    fillCell(x, y);
+                }
+
+                grid[x][y] = !grid[x][y];
             }
         }));
 
@@ -139,6 +163,16 @@ public class DisplayParticlePane extends GridPane {
         isRunning = true;
     }
 
+    private void clearCell(int i, int j) {
+        gc.setFill(colorOff);
+        gc.fillRect(i * cellWidth, j * cellHeight, cellWidth, cellHeight);
+    }
+
+    private void fillCell(int i, int j) {
+        gc.setFill(colorOn);
+        gc.fillRect(i * cellWidth, j * cellHeight, cellWidth, cellHeight);
+    }
+
     public void stopAnimation() {
         bridge.pause();
         if (timeline != null)
@@ -146,18 +180,24 @@ public class DisplayParticlePane extends GridPane {
         isRunning = false;
     }
 
-    public void changeColorOn(String styleOn) {
-        for (int i = 0; i < numRows; i++) {
-            for (int j = 0; j < numCols; j++) {
-                grid[i][j].setStyleOn(styleOn);
-            }
-        }
+    public void changeColorOn(Color colorOn) {
+        this.colorOn = colorOn;
+        redrawCanvas();
     }
 
-    public void changeColorOff(String styleOff) {
-        for (int i = 0; i < numRows; i++) {
-            for (int j = 0; j < numCols; j++) {
-                grid[i][j].setStyleOff(styleOff);
+    public void changeColorOff(Color colorOff) {
+        this.colorOff = colorOff;
+        redrawCanvas();
+    }
+
+    private void redrawCanvas() {
+        for (int i = 0; i < numRows; ++i) {
+            for (int j = 0; j < numCols; ++j) {
+                if (grid[i][j]) {
+                    fillCell(i, j);
+                } else {
+                    clearCell(i, j);
+                }
             }
         }
     }

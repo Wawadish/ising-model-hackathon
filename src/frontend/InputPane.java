@@ -136,14 +136,12 @@ public class InputPane extends VBox {
 
         colorPicker1.setOnAction(event -> {
             Color c = colorPicker1.getValue();
-            String style = "-fx-background-color: rgb(" + (c.getRed()*255) + "," + (c.getGreen()*255) + ", " + (c.getBlue()*255) + ")";
-            Main.displayPane.changeColorOn(style);
+            Main.displayPane.changeColorOn(c);
         });
 
         colorPicker2.setOnAction(event -> {
             Color c = colorPicker2.getValue();
-            String style = "-fx-background-color: rgb(" + (c.getRed()*255) + "," + (c.getGreen()*255) + ", " + (c.getBlue()*255) + ")";
-            Main.displayPane.changeColorOff(style);
+            Main.displayPane.changeColorOff(c);
         });
 
         //Ai Prediction

@@ -12,7 +12,7 @@ public class Bridge {
     private final int cols;
     private final double temperature;
     private final double jConstant;
-    private ColorPane[][] initialInput;
+    private boolean[][] initialInput;
 
     private Process process;
     private ConcurrentLinkedDeque<List<Position>> changingPositions;
@@ -32,7 +32,7 @@ public class Bridge {
      * @param temperature  The temperature value
      * @param jConstant    The interaction strength constant
      */
-    public Bridge(int rows, int cols, double temperature, double jConstant, ColorPane[][] initialInput) {
+    public Bridge(int rows, int cols, double temperature, double jConstant, boolean[][] initialInput) {
         this.rows = rows;
         this.cols = cols;
         this.initialInput = initialInput;
@@ -43,9 +43,9 @@ public class Bridge {
 
     private void encodeInitialState() throws IOException {
         PrintWriter writer = new PrintWriter(new FileOutputStream(TEMP_FILE));
-        for (ColorPane[] row : initialInput) {
-            for (ColorPane pane : row) {
-                writer.print(pane.getState() ? '1' : '0');
+        for (boolean[] row : initialInput) {
+            for (boolean state : row) {
+                writer.print(state ? '1' : '0');
             }
             writer.print('\n');
         }
