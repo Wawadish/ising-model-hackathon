@@ -1,6 +1,7 @@
 package frontend;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -57,5 +58,6 @@ public class Main extends Application {
     public static void updateDisplay(DisplayParticlePane p){
         Main.displayPane = new DisplayParticlePane(p.getParams());
         root.setCenter(Main.displayPane);
+
     }
 }

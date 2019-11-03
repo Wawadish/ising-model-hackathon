@@ -1,6 +1,7 @@
 package frontend;
 
 import com.sun.deploy.xml.XMLable;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -63,12 +64,15 @@ public class InputPane extends VBox {
             }
         });
         yField.setOnAction(xField.getOnAction());
-        cbxMaterial.setOnAction(xField.getOnAction());
+        cbxMaterial.setOnAction(e -> {
+            Main.displayPane.updateThings(Main.displayPane.getParams().temperature,
+                    cbxMaterial.getSelectionModel().getSelectedItem());
+        });
         tempSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number old_val, Number new_val) {
                 sliderLabel.setText(String.format("%.2f + Kelvins", new_val));
-
+                Main.displayPane.updateThings(new_val.doubleValue(), Main.displayPane.getParams().material);
             }
         });
 
@@ -87,42 +91,38 @@ public class InputPane extends VBox {
         colorPicker1.setLayoutY(height/2);
         checkBox1 = new CheckBox();
         checkBox1.setSelected(true);
-        checkBox1.setOpacity(0);
-
-        colorPicker1.setOnAction(event -> {
-            Color c = colorPicker1.getValue();
-            String style = "-fx-background-color: rgb(" + c.getRed() + "," + c.getGreen() + ", " + c.getBlue()+ ")";
-            Main.displayPane.changeColorOn(style);
-        });
+        checkBox1.setDisable(true);
 
         //Color Picker 2
         colorPicker2 = new ColorPicker(new Color(0, 0, 0, 1));
         colorPicker2.setLayoutY(height/2 + height/20);
         checkBox2 = new CheckBox();
-        checkBox2.setOpacity(1);
 
 
         checkBox1.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (!newValue)
+                    return;
+
                 DisplayParticlePane.firstColor = true;
-                checkBox1.setOpacity(0);
-                checkBox2.setOpacity(1);
+                checkBox2.setDisable(false);
                 checkBox2.setSelected(false);
+                checkBox1.setDisable(true);
             }
         });
 
         checkBox2.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (!newValue)
+                    return;
+
                 DisplayParticlePane.firstColor = false;
-                checkBox2.setOpacity(0);
-                checkBox1.setOpacity(1);
+                checkBox1.setDisable(false);
                 checkBox1.setSelected(false);
+                checkBox2.setDisable(true);
             }
-        });
-        checkBox2.setOnAction(e->{
-            checkBox1.setSelected(checkBox1.isSelected());
         });
 
         HBox hbox1 = new HBox();

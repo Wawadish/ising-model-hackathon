@@ -3,8 +3,8 @@ package frontend;
 public class Parameters {
     private int rows;
     private int columns;
-    private double temperature;
-    private Materials material;
+    public double temperature;
+    public Materials material;
 
     public Parameters(int rows, int columns, double temperature, Materials material){
         this.rows = rows;
