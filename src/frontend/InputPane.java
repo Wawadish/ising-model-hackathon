@@ -16,6 +16,10 @@ import java.text.DecimalFormat;
 
 public class InputPane extends VBox {
 
+    public static ColorPicker colorPicker1;
+    public static ColorPicker colorPicker2;
+
+
     public InputPane(double width, double height){
         this.setPrefSize(width, height);
 
@@ -64,7 +68,7 @@ public class InputPane extends VBox {
         tempBox.setSpacing(this.getPrefWidth() / 4);
 
         //Color Picker 1
-        ColorPicker colorPicker1 = new ColorPicker();
+        colorPicker1 = new ColorPicker();
         colorPicker1.setLayoutY(height/2);
 
         colorPicker1.setOnAction(event -> {
@@ -74,22 +78,19 @@ public class InputPane extends VBox {
         });
 
         //Color Picker 2
-        ColorPicker colorPicker2 = new ColorPicker(new Color(0, 0, 0, 1));
+        colorPicker2 = new ColorPicker(new Color(0, 0, 0, 1));
         colorPicker2.setLayoutY(height/2 + height/20);
 
         colorPicker1.setOnAction(event -> {
             Color c = colorPicker1.getValue();
-            System.out.println(c.getRed() + " " + c.getGreen() + " " + c.getBlue());
-            String style = "-fx-background-color: rgb(" + (c.getRed()*255) + "," + (c.getGreen()*255) + ", " + (c.getBlue()*255)+ ")";
+            String style = "-fx-background-color: rgb(" + (c.getRed()*255) + "," + (c.getGreen()*255) + ", " + (c.getBlue()*255) + ")";
             Main.displayPane.changeColorOn(style);
-            Main.updateDisplay(Main.displayPane);
         });
 
         colorPicker2.setOnAction(event -> {
             Color c = colorPicker2.getValue();
-            String style = "-fx-background-color: rgb(" + (c.getRed()*255) + "," + (c.getGreen()*255) + ", " + (c.getBlue()*255)+ ")";
+            String style = "-fx-background-color: rgb(" + (c.getRed()*255) + "," + (c.getGreen()*255) + ", " + (c.getBlue()*255) + ")";
             Main.displayPane.changeColorOff(style);
-            Main.updateDisplay(Main.displayPane);
         });
 
 

@@ -16,8 +16,10 @@ public class BottomPane extends Pane {
         this.stopped = true;
         pause = new Button("START");
 
+        pause.setLayoutX(width - width/10);
+
         reset = new Button("RESET");
-        reset.setLayoutX(pause.getLayoutX() + width/10);
+        reset.setLayoutX(pause.getLayoutX() - width/10);
 
         pause.setOnAction((event) -> {
             if(stopped) {
@@ -34,6 +36,7 @@ public class BottomPane extends Pane {
         reset.setOnAction((event) -> {
             Main.displayPane.stopAnimation();
             pause.setText("START");
+            stopped = true;
             Main.updateDisplay(new DisplayParticlePane(Main.displayPane.getParams()));
         });
 
