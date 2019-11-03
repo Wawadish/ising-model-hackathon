@@ -139,6 +139,7 @@ public class DisplayParticlePane extends GridPane {
                     }
                     if (bridgeAi == null) {
                         bridgeAi = new BridgeAI(copy, this::updatePrediction);
+                        bridgeAi.startProcess();
                     } else {
                         try {
                             bridgeAi.encodeInitialState(copy);
@@ -147,13 +148,7 @@ public class DisplayParticlePane extends GridPane {
                         }
                     }
 
-                    if(bridgeAi == null) {
-                        try {
-                            bridgeAi.startProcess();
-                        }catch(Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
+ 
                 }
             }
 
