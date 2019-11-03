@@ -139,7 +139,7 @@ public class DisplayParticlePane extends GridPane {
                     bridgeAi = new BridgeAI(copy, this::updatePrediction);
                 }
             }
-
+            
             if(bridgeAi !=null) {
                 try {
                     bridgeAi.startProcess();

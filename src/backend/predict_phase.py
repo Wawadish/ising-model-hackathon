@@ -1,12 +1,18 @@
 import math
-import numpy
+import numpy as np
 import keras
 import os
 
+class Object(object):
+        pass
+
 dirpath = os.path.dirname(os.path.abspath(__file__))
 
-MODEL = dirpath + '../models/model_20191103-015907'
+MODEL = dirpath + '/../models/model_20191103-015907'
 
+params = Object()
+params.num_cols = 100
+params.num_rows = 100
 state = [[0 for j in range(params.num_cols)] for i in range(params.num_rows)]
 
 f = open(dirpath+'/temp_ai', 'r')
