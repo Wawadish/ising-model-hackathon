@@ -129,7 +129,7 @@ public class DisplayParticlePane extends GridPane {
 
             if(grid.length == 100 && grid[0].length == 100) {
                 copy = new ColorPane[100][100];
-                if (itterationCounter % 10000 == 0) {
+                if (itterationCounter % 1000 == 0) {
                     itterationCounter = 0;
                     for(int i=0; i<grid.length; i++) {
                         for (int j = 0; j < grid[i].length; j++) {
@@ -137,16 +137,18 @@ public class DisplayParticlePane extends GridPane {
                         }
                     }
                     bridgeAi = new BridgeAI(copy, this::updatePrediction);
+
+                    if(bridgeAi !=null) {
+                        try {
+                            bridgeAi.startProcess();
+                        }catch(Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
 
-            if(bridgeAi !=null) {
-                try {
-                    bridgeAi.startProcess();
-                }catch(Exception e) {
-                    e.printStackTrace();
-                }
-            }
+
 
 
 
