@@ -33,7 +33,6 @@ public class BridgeAI {
      */
     public BridgeAI(ColorPane[][] initialInput, Consumer<Integer> callback) {
         this.callback = callback;
-        
 		for (int i = 0; i < NUM_ROWS; ++i) {
 			for (int j = 0; j < NUM_COLS; ++j) {
 				input[i][j] = initialInput[i][j].getState();
