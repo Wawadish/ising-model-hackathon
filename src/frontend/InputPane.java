@@ -37,10 +37,10 @@ public class InputPane extends VBox {
         //Actions and Listeners
         xField.setOnAction(e->{
             if (!(xField.getText().equals("") || yField.getText().equals(""))) {
-                Main.updateDisplay(new Parameters(Integer.valueOf(xField.getText()),
+                Main.updateDisplay(new DisplayParticlePane(new Parameters(Integer.valueOf(xField.getText()),
                         Integer.valueOf(yField.getText()),
                         tempSlider.getValue(),
-                        cbxMaterial.getSelectionModel().getSelectedItem()));
+                        cbxMaterial.getSelectionModel().getSelectedItem())));
             }
         });
         yField.setOnAction(xField.getOnAction());

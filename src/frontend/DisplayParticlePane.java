@@ -20,10 +20,14 @@ public class DisplayParticlePane extends GridPane {
 
     private boolean isRunning;
     private Timeline timeline;
+    private Parameters params;
+
+
 
     public DisplayParticlePane(frontend.Parameters p) {
         this.NUM_COLUMNS = p.getColumns();
         this.NUM_ROWS = p.getRows();
+        this.params = p;
         setMinSize(this.WIDTH, this.HEIGHT);
         setMaxSize(this.WIDTH, this.HEIGHT);
         this.setStyle("-fx-background-color: red");
@@ -92,5 +96,17 @@ public class DisplayParticlePane extends GridPane {
         }
 
         return sb.toString();
+    }
+
+    public int getNUM_ROWS() {
+        return NUM_ROWS;
+    }
+
+    public int getNUM_COLUMNS() {
+        return NUM_COLUMNS;
+    }
+
+    public Parameters getParams() {
+        return params;
     }
 }
