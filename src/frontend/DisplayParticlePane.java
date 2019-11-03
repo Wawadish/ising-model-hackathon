@@ -34,10 +34,9 @@ public class DisplayParticlePane extends StackPane {
     private Color colorOn, colorOff;
     private double cellWidth, cellHeight;
     private int iterationCounter = 0;
+    private int computeCounter = 0;
     private BridgeAI bridgeAi;
     private int hellCount = 1;
-    private double averageMag;
-    private double magSum = 0;
 
     public DisplayParticlePane(frontend.Parameters p) {
         this.setPrefSize(WIDTH, HEIGHT);
@@ -79,13 +78,13 @@ public class DisplayParticlePane extends StackPane {
 
             double x = e.getX();
             double y = e.getY();
-            int gridX = (int)Math.floor(x/cellWidth);
-            int gridY = (int)Math.floor(y/cellHeight);
-            double gridRadius = dragRadius/cellWidth;
+            int gridX = (int) Math.floor(x / cellWidth);
+            int gridY = (int) Math.floor(y / cellHeight);
+            double gridRadius = dragRadius / cellWidth;
             swapGrid(gridX, gridY);
-            for (int i = 0; i < gridRadius; i++){
-                swapGrid(gridX+i, gridY+i);
-                swapGrid(gridX+i, gridY);
+            for (int i = 0; i < gridRadius; i++) {
+                swapGrid(gridX + i, gridY + i);
+                swapGrid(gridX + i, gridY);
                 swapGrid(gridX, gridY);
                 swapGrid(gridX, gridY + i);
 
@@ -119,7 +118,7 @@ public class DisplayParticlePane extends StackPane {
                 grid);
     }
 
-    private void swapGrid(int i, int j){
+    private void swapGrid(int i, int j) {
         if (i < 0 || j < 0 || i >= numRows || j >= numCols)
             return;
 
@@ -142,8 +141,8 @@ public class DisplayParticlePane extends StackPane {
 
         bridge.startProcess();
         this.timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> {
-            if(grid.length == 100 && grid[0].length == 100) {
-                if (iterationCounter % 10_000 == 0) {
+            if (grid.length == 100 && grid[0].length == 100) {
+                if (iterationCounter % 7_000 == 0) {
                     iterationCounter = 0;
                     if (bridgeAi != null) {
                         bridgeAi.stop();
@@ -170,25 +169,16 @@ public class DisplayParticlePane extends StackPane {
                 }
 
                 grid[x][y] = !grid[x][y];
-
-                for (int i = 0; i < numRows; i++) {
-                    for (int j = 0; j < numCols; j++) {
-                        if(grid[i][j]) {
-                            magSum++;
-                        } else {
-                            magSum--;
-                        }
-                    }
-                }
-
-                averageMag = magSum/(numRows*numCols);
-                magSum = 0;
-
-                FeedbackPane.valueMagnetization.setText(Double.toString(averageMag));
-
             }
 
+            if (computeCounter % 100 == 0) {
+                computeShit();
+            }
+
+
+
             iterationCounter++;
+            computeCounter++;
         }));
 
         timeline.setDelay(Duration.seconds(1));
@@ -196,6 +186,42 @@ public class DisplayParticlePane extends StackPane {
         timeline.play();
 
         isRunning = true;
+    }
+
+    private void computeShit() {
+        double magSum = 0;
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < numCols; j++) {
+                if (grid[i][j]) {
+                    magSum++;
+                } else {
+                    magSum--;
+                }
+            }
+        }
+
+        double averageMag = magSum / (numRows * numCols);
+        FeedbackPane.valueMagnetization.setText(String.format("%.2f", averageMag));
+
+        double energy = 0;
+        for (int i = 0; i < numRows; ++i) {
+            for (int j = 0; j < numRows; ++j) {
+                boolean spin0 = grid[i][j];
+                boolean spin1 = grid[(i + 1) % numRows][j];
+                boolean spin2 = grid[i][(j + 1) % numCols];
+
+                energy += bool2spin(spin0) * bool2spin(spin1);
+                energy += bool2spin(spin0) * bool2spin(spin2);
+            }
+        }
+
+        energy /= -1000;
+
+        FeedbackPane.valueEnergy.setText(String.format("%.2f", energy));
+    }
+
+    private int bool2spin(boolean b) {
+        return b ? 1 : -1;
     }
 
     private void clearCell(int i, int j) {
