@@ -62,7 +62,7 @@ public class DisplayParticlePane extends GridPane {
             int gridX = (int)Math.floor(x/grid[0][0].getWidth());
             int gridY = (int)Math.floor(y/grid[0][0].getHeight());
             double gridRadius = dragRadius/grid[0][0].getWidth();
-            grid[gridX][gridY].swapState();
+            swapGrid(gridX, gridY);
             for (int i = 0; i < gridRadius; i++){
                 swapGrid(gridX+i, gridY+i);
                 swapGrid(gridX+i, gridY);
