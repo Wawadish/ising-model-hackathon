@@ -1,8 +1,11 @@
 import math
 import numpy
 import keras
+import os
 
-MODEL = '....//////'
+dirpath = os.path.dirname(os.path.abspath(__file__))
+
+MODEL = dirpath + '../models/model_20191103-015907'
 
 state = [[0 for j in range(params.num_cols)] for i in range(params.num_rows)]
 
