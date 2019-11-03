@@ -21,9 +21,9 @@ public class TitlePane extends Pane {
 
 
         this.title = new Label("Ising Model Simulation");
-        this.title.setFont(new Font(44));
+        this.title.setFont(new Font("System Bold", 44));
         this.title.setAlignment(Pos.TOP_LEFT);
-        this.title.setPadding(new Insets(10, 0, 10, 20));
+        this.title.setPadding(new Insets(20, 0, 10, 20));
 
         this.getChildren().addAll(this.title);
 

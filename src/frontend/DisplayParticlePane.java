@@ -31,7 +31,7 @@ public class DisplayParticlePane extends StackPane {
     private GraphicsContext gc;
     private double dragRadius = this.WIDTH / 20;
 
-    private Color colorOn, colorOff;
+    public Color colorOn, colorOff;
     private double cellWidth, cellHeight;
     private int iterationCounter = 0;
     private int computeCounter = 0;
@@ -40,8 +40,14 @@ public class DisplayParticlePane extends StackPane {
 
     public DisplayParticlePane(frontend.Parameters p) {
         this.setPrefSize(WIDTH, HEIGHT);
-        this.colorOn = Color.WHITE;
-        this.colorOff = Color.BLACK;
+
+        if (Main.displayPane != null) {
+            this.colorOn = Main.displayPane.colorOn;
+            this.colorOff = Main.displayPane.colorOff;
+        } else {
+            this.colorOn = Color.WHITE;
+            this.colorOff = Color.BLACK;
+        }
 
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();
@@ -51,7 +57,6 @@ public class DisplayParticlePane extends StackPane {
         this.numRows = p.getRows();
         this.numCols = p.getColumns();
         this.params = p;
-        this.setStyle("-fx-background-color: black");
 
         this.grid = new boolean[numRows][numCols];
 

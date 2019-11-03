@@ -2,9 +2,11 @@ package frontend;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -21,20 +23,25 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         try{
             root = new BorderPane();
+            root.setStyle("-fx-background-color: white");
+
             //Top
             StackPane p = new StackPane();
             p.setPrefHeight(100);
             root.setTop(new TitlePane(WIDTH, 100));
 
+            //Center
+            displayPane = new DisplayParticlePane(new frontend.Parameters(100, 100 , 300, Materials.MEDIUM_FERRO));
+            root.setCenter(displayPane);
+
             // Right
             p = new StackPane();
             p.setPrefWidth(400);
             InputPane inputPane = new InputPane(WIDTH - DisplayParticlePane.WIDTH, DisplayParticlePane.HEIGHT);
-            root.setRight(new VBox(new FeedbackPane(), inputPane));
+            VBox box = new VBox(new FeedbackPane(), inputPane);
+            box.setPadding(new Insets(0, 20, 0, 20));
+            root.setRight(box);
 
-            //Center
-            displayPane = new DisplayParticlePane(new frontend.Parameters(100, 100 , 300, Materials.MEDIUM_FERRO));
-            root.setCenter(displayPane);
             //Left
             root.setLeft(null);
 
