@@ -18,25 +18,30 @@ public class InputPane extends VBox {
 
     public static ColorPicker colorPicker1;
     public static ColorPicker colorPicker2;
+    public static Slider tempSlider;
+    public static ComboBox<Materials> cbxMaterial;
+    public static TextField xField;
+    public static TextField yField;
+    public static Label aIprediction;
 
 
     public InputPane(double width, double height){
         this.setPrefSize(width, height);
 
         //Temperature
-        Slider tempSlider = new Slider();
+        tempSlider = new Slider();
         tempSlider.setValue(0);
         tempSlider.setMax(1000);
         Label sliderLabel = new Label("000.00 + Kelvins");
         sliderLabel.setContentDisplay(ContentDisplay.RIGHT);
         //Materials
-        ComboBox<Materials> cbxMaterial = new ComboBox<>();
+        cbxMaterial = new ComboBox<>();
         cbxMaterial.setItems(FXCollections.observableArrayList(Materials.values()));
         cbxMaterial.getSelectionModel().select(Materials.EINSTEINIUM);
 
         //X and Y input
-        TextField xField = new TextField();
-        TextField yField = new TextField();
+        xField = new TextField();
+        yField = new TextField();
         xField.setText("50");
         yField.setText("50");
 
@@ -55,6 +60,7 @@ public class InputPane extends VBox {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number old_val, Number new_val) {
                 sliderLabel.setText(String.format("%.2f + Kelvins", new_val));
+
             }
         });
 
@@ -94,8 +100,11 @@ public class InputPane extends VBox {
             Main.displayPane.changeColorOff(style);
         });
 
+        //Ai Prediction
+        aIprediction = new Label("State Predicted by AI: ");
+        sliderLabel.setLayoutY(height/2 + height/10);;
 
         //Add to pane
-        this.getChildren().addAll(tempBox,cbxMaterial, xyBox, colorPicker1, colorPicker2);
+        this.getChildren().addAll(tempBox,cbxMaterial, xyBox, colorPicker1, colorPicker2, aIprediction);
     }
 }
