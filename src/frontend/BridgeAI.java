@@ -36,9 +36,6 @@ public class BridgeAI {
         this.callback = callback;
 		for (int i = 0; i < NUM_ROWS; ++i) {
 			for (int j = 0; j < NUM_COLS; ++j) {
-                if(initialInput[i][j] == null) {
-                    System.out.println(i + " " + j);
-                }
 			    input[i][j] = initialInput[i][j].getState();
 			}
 		}
