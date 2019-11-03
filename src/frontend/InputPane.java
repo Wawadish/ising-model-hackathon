@@ -63,12 +63,15 @@ public class InputPane extends VBox {
             }
         });
         yField.setOnAction(xField.getOnAction());
-        cbxMaterial.setOnAction(xField.getOnAction());
+        cbxMaterial.setOnAction(e -> {
+            Main.displayPane.updateThings(Main.displayPane.getParams().temperature,
+                    cbxMaterial.getSelectionModel().getSelectedItem());
+        });
         tempSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number old_val, Number new_val) {
                 sliderLabel.setText(String.format("%.2f + Kelvins", new_val));
-
+                Main.displayPane.updateThings(new_val.doubleValue(), Main.displayPane.getParams().material);
             }
         });
 
