@@ -16,7 +16,9 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
     private static BorderPane root;
+    public static DisplayParticlePane displayPane;
 
     @Override
     public void start(Stage primaryStage) {
@@ -33,13 +35,13 @@ public class Main extends Application {
             root.setRight(new InputPane(WIDTH - DisplayParticlePane.WIDTH, DisplayParticlePane.HEIGHT));
 
             //Center
-            DisplayParticlePane displayPane = new DisplayParticlePane(new frontend.Parameters(50, 50 , 300, Materials.EINSTEINIUM));
+            displayPane = new DisplayParticlePane(new frontend.Parameters(50, 50 , 300, Materials.EINSTEINIUM));
             root.setCenter(displayPane);
 
             //Bottom
             p = new StackPane();
             p.setPrefHeight(100);
-            root.setBottom(new BottomPane(WIDTH, ((HEIGHT-DisplayParticlePane.HEIGHT)/2), displayPane));
+            root.setBottom(new BottomPane(WIDTH, ((HEIGHT-DisplayParticlePane.HEIGHT)/2)));
 
             //Left
             root.setLeft(null);
@@ -54,6 +56,7 @@ public class Main extends Application {
     }
 
     public static void updateDisplay(frontend.Parameters p){
-        root.setCenter(new DisplayParticlePane(p));
+        Main.displayPane = new DisplayParticlePane(p);
+        root.setCenter(Main.displayPane);
     }
 }

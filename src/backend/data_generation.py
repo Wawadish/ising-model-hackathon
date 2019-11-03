@@ -10,8 +10,8 @@ class Object(object):
 FLIPS_PER_EPOCH = 10
 INITIAL_WAIT = 5_000
 SNAPSHOT_INTERVAL = 1000
-SNAPSHOT_COUNT = 100
-RUNS_COUNT = 10
+SNAPSHOT_COUNT = 10
+RUNS_COUNT = 100
 
 # Set up argument parser
 parser = argparse.ArgumentParser(description='Generate Ising Model data')
@@ -29,7 +29,7 @@ def time_step(ising):
 	flips = ising_utils.choose_potential_flips(ising.params, FLIPS_PER_EPOCH)
 	changes = ising_utils.apply_flips(flips, ising)
 	
-def run_simulation(params, snapshots):
+def run_simulation(is_ferro, params, snapshots, labels):
 	# Generate initial state
 	initial_state = [random.choices([-1, 1], k=params.num_cols) for i in range(params.num_rows)]
 	initial_energy = ising_utils.compute_energy(initial_state, params)
@@ -49,16 +49,24 @@ def run_simulation(params, snapshots):
 		time_step(ising_system)
 		
 		if epoch % SNAPSHOT_INTERVAL == 0:
+			labels.append(int(is_ferro))
 			snapshots.append(ising_system.state.copy())
 			
 	return snapshots
 	
 snapshots = []
-for gamma in range(0.05, 0.85, 0.05):
-	params.gamma = gamma
-	print("GENERATING FOR GAMMA {}".format(gamma))
-	for runs in range(RUNS_COUNT):
-		print("Run {}. Snapshots: {}".format(runs, len(snapshots)), flush=True)
-		run_simulation(params, snapshots)
+labels = []
+critical_gamma = 0.5 * math.log(1 + math.sqrt(2))
 
-numpy.save(args.output_file+".npy", snapshots)
+# Iterate from 0.05 to 0.85
+for i in range(1, 17):
+	gamma = 0.05 * i
+	params.gamma = gamma
+	is_ferro = (gamma < critical_gamma)
+	print("GENERATING FOR GAMMA {}. Snapshots: {}".format(gamma, len(snapshots)), flush=True)
+	for runs in range(RUNS_COUNT):
+		if (runs+1) % 25 == 0:
+			print("Completing run {}".format(runs+1), flush=True)
+		run_simulation(is_ferro, params, snapshots, labels)
+
+numpy.save(args.output_file + ".npy", snapshots)

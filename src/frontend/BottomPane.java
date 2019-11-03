@@ -10,7 +10,7 @@ public class BottomPane extends Pane {
     private boolean stopped;
     private Button pause;
 
-    public BottomPane(double width, double height, DisplayParticlePane pane) {
+    public BottomPane(double width, double height) {
         this.setPrefSize(width, height);
         this.stopped = true;
         pause = new Button("START");
@@ -18,11 +18,11 @@ public class BottomPane extends Pane {
         pause.setOnAction((event) -> {
             if(stopped) {
                 pause.setText("STOP");
-                pane.startAnimation();
+                Main.displayPane.startAnimation();
                 stopped = !stopped;
             } else {
                 pause.setText("START");
-                pane.stopAnimation();
+                Main.displayPane.stopAnimation();
                 stopped = !stopped;
             }
 
