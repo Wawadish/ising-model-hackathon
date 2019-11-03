@@ -16,23 +16,36 @@ import java.text.DecimalFormat;
 
 public class InputPane extends VBox {
 
+    public static ColorPicker colorPicker1;
+    public static ColorPicker colorPicker2;
+    public static Slider tempSlider;
+    public static ComboBox<Materials> cbxMaterial;
+    public static TextField xField;
+    public static TextField yField;
+    public static Label aIprediction;
+
+
     public InputPane(double width, double height){
         this.setPrefSize(width, height);
 
         //Temperature
-        Slider tempSlider = new Slider();
+        tempSlider = new Slider();
         tempSlider.setValue(0);
+
+        tempSlider.setMin(1);
+        tempSlider.setValue(tempSlider.getMin());
+
         tempSlider.setMax(1000);
         Label sliderLabel = new Label("000.00 + Kelvins");
         sliderLabel.setContentDisplay(ContentDisplay.RIGHT);
         //Materials
-        ComboBox<Materials> cbxMaterial = new ComboBox<>();
+        cbxMaterial = new ComboBox<>();
         cbxMaterial.setItems(FXCollections.observableArrayList(Materials.values()));
         cbxMaterial.getSelectionModel().select(Materials.EINSTEINIUM);
 
         //X and Y input
-        TextField xField = new TextField();
-        TextField yField = new TextField();
+        xField = new TextField();
+        yField = new TextField();
         xField.setText("50");
         yField.setText("50");
 
@@ -51,6 +64,7 @@ public class InputPane extends VBox {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number old_val, Number new_val) {
                 sliderLabel.setText(String.format("%.2f + Kelvins", new_val));
+
             }
         });
 
@@ -65,7 +79,7 @@ public class InputPane extends VBox {
         tempBox.setSpacing(this.getPrefWidth() / 4);
 
         //Color Picker 1
-        ColorPicker colorPicker1 = new ColorPicker();
+        colorPicker1 = new ColorPicker();
         colorPicker1.setLayoutY(height/2);
 
         colorPicker1.setOnAction(event -> {
@@ -75,26 +89,26 @@ public class InputPane extends VBox {
         });
 
         //Color Picker 2
-        ColorPicker colorPicker2 = new ColorPicker(new Color(0, 0, 0, 1));
+        colorPicker2 = new ColorPicker(new Color(0, 0, 0, 1));
         colorPicker2.setLayoutY(height/2 + height/20);
 
         colorPicker1.setOnAction(event -> {
             Color c = colorPicker1.getValue();
-            System.out.println(c.getRed() + " " + c.getGreen() + " " + c.getBlue());
-            String style = "-fx-background-color: rgb(" + (c.getRed()*255) + "," + (c.getGreen()*255) + ", " + (c.getBlue()*255)+ ")";
+            String style = "-fx-background-color: rgb(" + (c.getRed()*255) + "," + (c.getGreen()*255) + ", " + (c.getBlue()*255) + ")";
             Main.displayPane.changeColorOn(style);
-            Main.updateDisplay(Main.displayPane);
         });
 
         colorPicker2.setOnAction(event -> {
             Color c = colorPicker2.getValue();
-            String style = "-fx-background-color: rgb(" + (c.getRed()*255) + "," + (c.getGreen()*255) + ", " + (c.getBlue()*255)+ ")";
+            String style = "-fx-background-color: rgb(" + (c.getRed()*255) + "," + (c.getGreen()*255) + ", " + (c.getBlue()*255) + ")";
             Main.displayPane.changeColorOff(style);
-            Main.updateDisplay(Main.displayPane);
         });
 
+        //Ai Prediction
+        aIprediction = new Label("State Predicted by AI: ");
+        sliderLabel.setLayoutY(height/2 + height/10);;
 
         //Add to pane
-        this.getChildren().addAll(tempBox,cbxMaterial, xyBox, colorPicker1, colorPicker2);
+        this.getChildren().addAll(tempBox,cbxMaterial, xyBox, colorPicker1, colorPicker2, aIprediction);
     }
 }

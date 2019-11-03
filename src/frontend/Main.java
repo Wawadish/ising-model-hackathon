@@ -57,7 +57,5 @@ public class Main extends Application {
     public static void updateDisplay(DisplayParticlePane p){
         Main.displayPane = new DisplayParticlePane(p.getParams());
         root.setCenter(Main.displayPane);
-        System.out.println(Main.displayPane.getWidth());
-        System.out.println(Main.displayPane.getHeight());
     }
 }
