@@ -53,16 +53,19 @@ public class BridgeAI {
         writer.close();
     }
 
-    public void encodeInitialState(boolean[][] newInput) throws IOException {
-        PrintWriter writer = new PrintWriter(new FileOutputStream(TEMP_FILE));
+    public void encodeInitialState(boolean[][] newInput, int n) throws IOException {
+        FileOutputStream fos = new FileOutputStream(new File(TEMP_FILE.getPath() + n));
+        PrintWriter writer = new PrintWriter(fos);
         for (boolean[] row : newInput) {
             for (boolean state : row) {
                 writer.print(state ? '1' : '0');
             }
             writer.print('\n');
         }
+
         writer.flush();
         writer.close();
+        fos.close();
     }
 
     //Run Initial Python command
@@ -79,8 +82,10 @@ public class BridgeAI {
         try {
             String str;
             while ((str = scanner.nextLine()) != null) {
-                if (!str.startsWith("Prediction "))
+                if (!str.startsWith("Prediction ")) {
+                    System.out.println("discard " + str);
                     continue;
+                }
 
                 int output = Integer.parseInt(str.substring(11, 12));
                 Platform.runLater(() -> callback.accept(output));
