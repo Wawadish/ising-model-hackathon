@@ -31,19 +31,31 @@ public class BridgeAI {
      * @param initialInput The String of 1's and 0's representing the grid
      * @param callback yeet
      */
-    public BridgeAI(ColorPane[][] initialInput, Consumer<Integer> callback) {
+    public BridgeAI(boolean[][] initialInput, Consumer<Integer> callback) {
+        input = new boolean[NUM_ROWS][NUM_COLS];
         this.callback = callback;
-        
 		for (int i = 0; i < NUM_ROWS; ++i) {
 			for (int j = 0; j < NUM_COLS; ++j) {
-				input[i][j] = initialInput[i][j].getState();
+			    input[i][j] = initialInput[i][j];
 			}
 		}
     }
 
-    private void encodeInitialState() throws IOException {
+    public void encodeInitialState() throws IOException {
         PrintWriter writer = new PrintWriter(new FileOutputStream(TEMP_FILE));
         for (boolean[] row : input) {
+            for (boolean state : row) {
+                writer.print(state ? '1' : '0');
+            }
+            writer.print('\n');
+        }
+        writer.flush();
+        writer.close();
+    }
+
+    public void encodeInitialState(boolean[][] newInput) throws IOException {
+        PrintWriter writer = new PrintWriter(new FileOutputStream(TEMP_FILE));
+        for (boolean[] row : newInput) {
             for (boolean state : row) {
                 writer.print(state ? '1' : '0');
             }
@@ -65,8 +77,15 @@ public class BridgeAI {
         scanner = new Scanner(new InputStreamReader(process.getInputStream()));
 
         try {
-            int output = scanner.nextInt();
-            Platform.runLater(() -> callback.accept(output));
+            String str;
+            while ((str = scanner.nextLine()) != null) {
+                if (!str.startsWith("Prediction "))
+                    continue;
+
+                int output = Integer.parseInt(str.substring(11, 12));
+                Platform.runLater(() -> callback.accept(output));
+                break;
+            }
         } catch (NoSuchElementException ex) { }
         finally {
             process.destroy();

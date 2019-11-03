@@ -1,8 +1,11 @@
 package frontend;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
+
+import javax.swing.*;
 
 public class TitlePane extends Pane {
 
@@ -18,14 +21,8 @@ public class TitlePane extends Pane {
 
 
         this.title = new Label("Ising Model Simulation");
-        this.title.setFont(new Font(20));
-
-
-        double w = (this.getWidth()/2)-(title.getWidth()/2);
-        double h = (this.getHeight()/2)-(title.getHeight()/2);
-
-        this.title.setLayoutX(w);
-        this.title.setLayoutY(h);
+        this.title.setFont(new Font(this.height));
+        this.title.setAlignment(Pos.TOP_LEFT);
 
         this.getChildren().addAll(this.title);
 
