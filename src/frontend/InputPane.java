@@ -59,7 +59,7 @@ public class InputPane extends GridPane {
         //Materials
         cbxMaterial = new ComboBox<>();
         cbxMaterial.setItems(FXCollections.observableArrayList(Materials.values()));
-        cbxMaterial.getSelectionModel().select(Materials.EINSTEINIUM);
+        cbxMaterial.getSelectionModel().select(Materials.MEDIUM_FERRO);
 
         cbxMaterial.setButtonCell(new ListCell(){
 

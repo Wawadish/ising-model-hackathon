@@ -12,7 +12,7 @@ class Object(object):
     pass
 
 k = 1
-FLIPS_PER_EPOCH = 10
+FLIPS_PER_EPOCH = 20
 
 # Set up argument parser
 parser = argparse.ArgumentParser(description='Run Ising Model simulation.')
