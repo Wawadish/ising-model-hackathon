@@ -2,15 +2,15 @@ package frontend;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public class FeedbackPane extends GridPane {
 
     public static Label valueAI = new Label("");
 
-    private static final Font FONT = new Font(20);
+    private static final Font FONT = new Font("Lato",20);
     private static final Font FONT_BOLD = new Font("System Bold", 25);
 
     public static Label valueEnergy;
@@ -25,7 +25,7 @@ public class FeedbackPane extends GridPane {
         valueMagnetization = new Label("234");
         valueAI = new Label("___");
 
-        Label labelSubtitle =new Label("Statistics: ");
+        Label labelSubtitle =new Label("Feedback ");
 
         labelEnergy.setFont(FONT);
         labelMagnetization.setFont(FONT);

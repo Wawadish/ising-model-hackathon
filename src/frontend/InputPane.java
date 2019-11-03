@@ -22,7 +22,7 @@ import java.text.DecimalFormat;
 
 public class InputPane extends GridPane {
 
-    private static final Font FONT = new Font(20);
+    private static final Font FONT = new Font("Lato",20);
     private static final Font FONT_BOLD = new Font("System Bold", 20);
 
     public static CheckBox checkBox1;
@@ -53,7 +53,7 @@ public class InputPane extends GridPane {
         tempSlider.setMin(1);
         tempSlider.setValue(tempSlider.getMin());
 
-        tempSlider.setMax(1000);
+        tempSlider.setMax(1300);
         Label sliderLabel = new Label("000.00 + Kelvins");
         sliderLabel.setContentDisplay(ContentDisplay.RIGHT);
         //Materials
@@ -122,17 +122,21 @@ public class InputPane extends GridPane {
         tempBox.setSpacing(this.getPrefWidth() / 4);
 
         //Color Picker 1
-        colorPicker1 = new ColorPicker();
+        Color colorOn =  new Color(170.0/255, 159.0/255, 107.0/255, 1);
+        colorPicker1 = new ColorPicker(colorOn);
         colorPicker1.setLayoutY(height / 2);
         checkBox1 = new CheckBox();
         checkBox1.setSelected(true);
         checkBox1.setDisable(true);
 
         //Color Picker 2
-        colorPicker2 = new ColorPicker(new Color(0, 0, 0, 1));
+        Color colorOff = new Color(0, 0, 0, 1);
+        colorPicker2 = new ColorPicker(colorOff);
         colorPicker2.setLayoutY(height / 2 + height / 20);
         checkBox2 = new CheckBox();
 
+        Main.displayPane.changeColorOn(colorOn);
+        Main.displayPane.changeColorOff(colorOff);
 
         checkBox1.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
