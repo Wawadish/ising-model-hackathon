@@ -4,9 +4,8 @@ import random
 import time
 
 num_classes = 2
-data = np.load('../TrainingData/training_data_0{i}.npy', allow_pickle = True)
-train_x = data[0]
-train_y = data[1]
+train_x = np.load('../TrainingData/unified_train_x.npy', allow_pickle = True)
+train_y = np.load('../TrainingData/unified_train_y.npy', allow_pickle = True)
 
 model = keras.models.Sequential()
 model.add(keras.layers.Dense(40, activation='sigmoid', input_shape=(100*100,)))
