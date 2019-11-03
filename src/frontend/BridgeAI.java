@@ -32,10 +32,14 @@ public class BridgeAI {
      * @param callback yeet
      */
     public BridgeAI(ColorPane[][] initialInput, Consumer<Integer> callback) {
+        input = new boolean[NUM_ROWS][NUM_COLS];
         this.callback = callback;
 		for (int i = 0; i < NUM_ROWS; ++i) {
 			for (int j = 0; j < NUM_COLS; ++j) {
-				input[i][j] = initialInput[i][j].getState();
+                if(initialInput[i][j] == null) {
+                    System.out.println(i + " " + j);
+                }
+			    input[i][j] = initialInput[i][j].getState();
 			}
 		}
     }

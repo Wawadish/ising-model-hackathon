@@ -125,11 +125,11 @@ public class DisplayParticlePane extends GridPane {
         }
 
         bridge.startProcess();
-        this.timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> {
+        this.timeline = new Timeline(new KeyFrame(Duration.millis(10), event -> {
 
             if(grid.length == 100 && grid[0].length == 100) {
                 copy = new ColorPane[100][100];
-                if (itterationCounter % 1000 == 0) {
+                if (itterationCounter % 10000 == 0) {
                     itterationCounter = 0;
                     for(int i=0; i<grid.length; i++) {
                         for (int j = 0; j < grid[i].length; j++) {
