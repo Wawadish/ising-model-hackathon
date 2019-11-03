@@ -149,9 +149,6 @@ public class DisplayParticlePane extends GridPane {
             }
 
 
-
-
-
             List<Position> changes = bridge.getChangingPositions().pollFirst();
             if (changes == null) {
                 stopAnimation();

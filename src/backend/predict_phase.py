@@ -21,9 +21,9 @@ for row in range(params.num_rows):
 	for col, val in enumerate(row_str):
 		state[row][col] = 1 if val == '1' else -1
 
-test_x = np.reshape(state, (100*100))
+test_x = np.reshape(state, (100*100,))
 
 model = keras.models.load_model(MODEL)
-pred_y = model.predict(test_x)
+pred_y = model.predict([test_x])
 output = np.argmax(pred_y)
 print(output)
