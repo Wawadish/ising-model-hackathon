@@ -59,14 +59,15 @@ labels = []
 critical_gamma = 0.5 * math.log(1 + math.sqrt(2))
 
 # Iterate from 0.05 to 0.85
-for i in range(1, 17):
+for i in range(1, 18):
 	gamma = 0.05 * i
 	params.gamma = gamma
 	is_ferro = (gamma < critical_gamma)
-	print("GENERATING FOR GAMMA {}. Snapshots: {}".format(gamma, len(snapshots)), flush=True)
+	print("GENERATING FOR GAMMA {:.2f}. Snapshots: {}".format(gamma, len(snapshots)), flush=True)
 	for runs in range(RUNS_COUNT):
 		if (runs+1) % 25 == 0:
 			print("Completing run {}".format(runs+1), flush=True)
 		run_simulation(is_ferro, params, snapshots, labels)
 
-numpy.save(args.output_file + ".npy", snapshots)
+data = [snapshots, labels]
+numpy.save(args.output_file + ".npy", data)
