@@ -5,6 +5,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
+import jdk.nashorn.internal.ir.CatchNode;
 
 import java.util.List;
 import java.util.Random;
@@ -22,6 +23,8 @@ public class DisplayParticlePane extends GridPane {
     private boolean isRunning;
     private Timeline timeline;
     private Parameters params;
+
+    private double dragRadius = this.WIDTH/20;
 
     public DisplayParticlePane(frontend.Parameters p) {
         this.numRows = p.getRows();
@@ -49,12 +52,40 @@ public class DisplayParticlePane extends GridPane {
             }
         }
 
+        this.setOnMouseDragged(e->{
+            double x = e.getX();
+            double y = e.getY();
+            int gridX = (int)Math.floor(x/grid[0][0].getWidth());
+            int gridY = (int)Math.floor(y/grid[0][0].getHeight());
+            double gridRadius = dragRadius/grid[0][0].getWidth();
+            grid[gridX][gridY].swapState();
+            for (int i = 0; i < gridRadius; i++){
+                swapGrid(gridX+i, gridY+i);
+                swapGrid(gridX+i, gridY);
+                swapGrid(gridX, gridY);
+                swapGrid(gridX, gridY+i);
+
+                swapGrid(gridX-i, gridY-i);
+                swapGrid(gridX-i, gridY);
+                swapGrid(gridX-i, gridY-i);
+                swapGrid(gridX, gridY-i);
+            }
+            System.out.println("Position: " + x + " " + y);
+
+        });
         this.bridge = new Bridge(
                 numRows,
                 numCols,
                 p.getTemperature(),
                 p.getMaterial().getInteractionStrength(),
                 grid);
+    }
+    private void swapGrid(int i, int j){
+        try{
+            this.grid[i][j].swapState();
+        }catch(Exception e){
+
+        }
     }
 
     public void startAnimation() {
