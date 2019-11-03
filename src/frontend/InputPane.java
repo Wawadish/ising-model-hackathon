@@ -31,6 +31,10 @@ public class InputPane extends VBox {
         //Temperature
         tempSlider = new Slider();
         tempSlider.setValue(0);
+
+        tempSlider.setMin(1);
+        tempSlider.setValue(tempSlider.getMin());
+
         tempSlider.setMax(1000);
         Label sliderLabel = new Label("000.00 + Kelvins");
         sliderLabel.setContentDisplay(ContentDisplay.RIGHT);
