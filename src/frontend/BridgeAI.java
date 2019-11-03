@@ -41,31 +41,25 @@ public class BridgeAI {
 		}
     }
 
-    public void encodeInitialState() throws IOException {
-        PrintWriter writer = new PrintWriter(new FileOutputStream(TEMP_FILE));
-        for (boolean[] row : input) {
-            for (boolean state : row) {
-                writer.print(state ? '1' : '0');
+    public void encodeInitialState(boolean[][] newInput) throws IOException {
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter(new FileOutputStream(new File(TEMP_FILE.getPath())));
+            for (boolean[] row : newInput) {
+                for (boolean state : row) {
+                    writer.print(state ? '1' : '0');
+                }
+                writer.print('\n');
             }
-            writer.print('\n');
-        }
-        writer.flush();
-        writer.close();
-    }
 
-    public void encodeInitialState(boolean[][] newInput, int n) throws IOException {
-        FileOutputStream fos = new FileOutputStream(new File(TEMP_FILE.getPath() + n));
-        PrintWriter writer = new PrintWriter(fos);
-        for (boolean[] row : newInput) {
-            for (boolean state : row) {
-                writer.print(state ? '1' : '0');
+        } catch (IOException ex) {
+            System.out.println(ex.getClass().getName()+": "+ex.getMessage());
+        } finally {
+            if (writer != null) {
+                writer.flush();
+                writer.close();
             }
-            writer.print('\n');
         }
-
-        writer.flush();
-        writer.close();
-        fos.close();
     }
 
     //Run Initial Python command
@@ -80,14 +74,14 @@ public class BridgeAI {
         scanner = new Scanner(new InputStreamReader(process.getInputStream()));
 
         try {
-            String str;
-            while ((str = scanner.nextLine()) != null) {
+            while (true) {
+                String str = scanner.nextLine();
                 if (!str.startsWith("Prediction ")) {
-                    System.out.println("discard " + str);
                     continue;
                 }
 
                 int output = Integer.parseInt(str.substring(11, 12));
+                System.out.println("Prediction "+output);
                 Platform.runLater(() -> callback.accept(output));
                 break;
             }
@@ -101,7 +95,7 @@ public class BridgeAI {
     public void startProcess() {
         runningThread = () -> {
             try {
-                encodeInitialState();
+                encodeInitialState(input);
                 runPythonCommand();
                 readPythonOutput();
             } catch (IOException e) {
@@ -110,5 +104,11 @@ public class BridgeAI {
         };
 
         new Thread(runningThread).start();
+    }
+
+    public void stop() {
+        if (process != null) {
+            process.destroy();
+        }
     }
 }

@@ -8,17 +8,22 @@ import javafx.scene.text.Font;
 
 public class FeedbackPane extends GridPane {
 
+    public static Label valueAI = new Label("");
+
     private static final Font FONT = new Font(20);
     private static final Font FONT_BOLD = new Font("System Bold", 25);
+
+    public static Label valueEnergy;
+    public static Label valueMagnetization;
 
     public FeedbackPane() {
         Label labelEnergy = new Label("Energy: ");
         Label labelMagnetization = new Label("Magnetization: ");
         Label labelAI = new Label("State Predicted by AI: ");
 
-        Label valueEnergy = new Label("123");
-        Label valueMagnetization = new Label("234");
-        Label valueAI = new Label("___");
+        valueEnergy = new Label("123");
+        valueMagnetization = new Label("234");
+        valueAI = new Label("___");
         Label labelSubtitle =new Label("Statistics: ");
 
         labelEnergy.setFont(FONT);
@@ -26,7 +31,7 @@ public class FeedbackPane extends GridPane {
         labelAI.setFont(FONT);
         valueEnergy.setFont(FONT);
         valueMagnetization.setFont(FONT);
-        valueAI.setFont(FONT);
+        valueAI.setFont(FONT_BOLD);
         labelSubtitle.setFont(FONT_BOLD);
 
         this.add(labelSubtitle, 0, 0);
