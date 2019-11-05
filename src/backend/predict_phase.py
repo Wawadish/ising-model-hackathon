@@ -8,7 +8,7 @@ class Object(object):
         pass
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
-MODEL = dirpath + '/../models/model_20191105-094955'
+MODEL = dirpath + '/../models/model_20191105-160134-70'
 model = keras.models.load_model(MODEL)
 params = Object()
 params.num_cols = 100
