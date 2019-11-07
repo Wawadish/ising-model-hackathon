@@ -12,7 +12,6 @@ class Object(object):
     pass
 
 k = 1
-FLIPS_PER_EPOCH = 20
 
 # Set up argument parser
 parser = argparse.ArgumentParser(description='Run Ising Model simulation.')
@@ -31,6 +30,8 @@ params.temperature = args.temperature
 params.j_constant = args.interaction_strength
 params.gamma = params.j_constant / (k*params.temperature)
 params.debug = args.debug
+
+FLIPS_PER_EPOCH = params.num_rows * params.num_cols // 1000
 
 if params.debug:
 	print('Rows: {}\nColumns: {}\nTemperature: {}\nJ Constant: {}'

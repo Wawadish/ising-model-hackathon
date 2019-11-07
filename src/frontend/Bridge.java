@@ -3,7 +3,6 @@ package frontend;
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Bridge {
 
@@ -22,8 +21,8 @@ public class Bridge {
     private Scanner scanner;
 
     //Variables
-    private final String FILENAME = "src/backend/ising_simulation.py";
-    private final File TEMP_FILE = new File("src/backend/temp");
+    private final String FILENAME = "./src/backend/ising_simulation.py";
+    private final File TEMP_FILE = new File("./src/backend/temp");
 
     /**
      * @param rows         Numbers of Rows of Grind
@@ -42,6 +41,7 @@ public class Bridge {
     }
 
     private void encodeInitialState() throws IOException {
+		System.out.println(new File(".").getAbsolutePath());
         PrintWriter writer = new PrintWriter(new FileOutputStream(TEMP_FILE));
         for (boolean[] row : initialInput) {
             for (boolean state : row) {
@@ -55,7 +55,7 @@ public class Bridge {
 
     //Run Initial Python command
     private void runPythonCommand() throws IOException {
-        String command = String.format("python %s %d %d %f %f", FILENAME, rows, cols, temperature, jConstant);
+        String command = String.format("python \"%s\" %d %d %f %f", FILENAME, rows, cols, temperature, jConstant);
         System.out.println(command);
         process = Runtime.getRuntime().exec(command);
     }

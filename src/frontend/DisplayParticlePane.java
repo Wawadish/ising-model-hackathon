@@ -1,5 +1,7 @@
 package frontend;
 
+import java.util.List;
+import java.util.Random;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -8,9 +10,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-
-import java.util.List;
-import java.util.Random;
 
 public class DisplayParticlePane extends StackPane {
     public static final double WIDTH = 0.7 * Main.WIDTH;
@@ -142,7 +141,7 @@ public class DisplayParticlePane extends StackPane {
 
         bridge.startProcess();
         this.timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> {
-            if (grid.length == 100 && grid[0].length == 100) {
+            if (grid.length >= 100 && grid[0].length >= 100) {
                 if (iterationCounter % 5_000 == 0) {
                     iterationCounter = 0;
                     if (bridgeAi != null) {

@@ -1,7 +1,5 @@
 package frontend;
 
-import com.sun.deploy.xml.XMLable;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -10,15 +8,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Material;
 import javafx.scene.text.Font;
-
-import javax.xml.soap.Text;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.text.DecimalFormat;
 
 public class InputPane extends GridPane {
 
